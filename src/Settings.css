@@ -1,0 +1,140 @@
+.settings {
+  background: #fff;
+  border: 4px solid #224;
+  border-radius: 4px;
+  box-shadow: #ddd 8px 8px 0 -4px, #224 8px 8px;
+  flex: none;
+  position: sticky;
+  margin: 41px 28px calc(100vh - 358px) 0;
+  top: 139px;
+  width: 330px;
+}
+
+.settingsGrid {
+  display: grid;
+  gap: 15px;
+  grid-template-columns: 1fr 66px;
+  margin: 10px;
+}
+
+.setting {
+  color: #224;
+  display: inline-flex;
+  font-family: "Nunito", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.toggleSwitchContainer {
+  display: inline-block;
+  height: 33px;
+  position: relative;
+  width: 66px;
+}
+
+.toggleSwitch,
+.toggleSwitch:before {
+  border: 4px solid #224;
+  border-radius: 16.5px;
+  position: absolute;
+  transition: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+
+.toggleSwitch {
+  background: #f77;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.toggleSwitch:before {
+  background: #fff;
+  content: "";
+  height: 25px;
+  left: -4px;
+  top: -4px;
+  width: 25px;
+}
+
+input[type="checkbox"] {
+  opacity: 0;
+}
+
+input[type="checkbox"]:checked + .toggleSwitch {
+  background: #7f7;
+}
+
+input[type="checkbox"]:checked + .toggleSwitch:before {
+  transform: translate3d(33px, 0, 0);
+}
+
+input[type="range"] {
+  appearance: none;
+  height: 33px;
+  margin-left: 10px;
+  width: calc(100% - 20px);
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(90deg, #7f7, #fd7 155px, #f77 267px) 0 /
+      calc(var(--depth-slider-value) * (302px) / 25) 100% no-repeat,
+    #ddd;
+  border: 4px solid #224;
+  border-radius: 8px;
+  cursor: pointer;
+  height: 16px;
+  width: 100%;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  background: #fff;
+  border: 4px solid #224;
+  border-radius: 16.5px;
+  cursor: pointer;
+  height: 33px;
+  margin-top: -12.5px;
+  width: 33px;
+}
+
+input[type="range"]::-moz-range-track {
+  background: linear-gradient(90deg, #7f7, #fd7 155px, #f77 267px) 0 /
+      calc(var(--depth-slider-value) * (302px) / 25) 100% no-repeat,
+    #ddd;
+  border: 4px solid #224;
+  border-radius: 8px;
+  cursor: pointer;
+  height: 8px;
+  width: calc(100% - 8px);
+}
+
+input[type="range"]::-moz-range-thumb {
+  background: #fff;
+  border: 4px solid #224;
+  border-radius: 16.5px;
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+}
+
+input[type="range"]:disabled {
+  pointer-events: none;
+}
+
+.depthLimitValue {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  color: #224;
+  display: block;
+  font-family: "Nunito", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 14px 14px;
+  text-align: center;
+  user-select: none;
+  white-space: nowrap;
+}

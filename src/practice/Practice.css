@@ -1,0 +1,15 @@
+.practiceContainer {
+  background: #fff;
+  border: 4px solid #224;
+  border-radius: 4px;
+  height: calc(100vh - 152px);
+  margin: 20px 20px 24px;
+  /* max-width: 1050px; */
+  min-width: 596px;
+  overflow: hidden;
+}
+
+text {
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
+}

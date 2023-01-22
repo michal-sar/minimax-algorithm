@@ -1,0 +1,92 @@
+.theoryButtons {
+  display: flex;
+  margin: 0 20px;
+  position: relative;
+  width: 604px;
+  z-index: 1;
+}
+
+.theoryButton {
+  background: #fff;
+  border: 4px solid #224;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  color: #224;
+  cursor: pointer;
+  flex: 1 0 auto;
+  font-family: "Nunito", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  height: 45px;
+  margin-bottom: -4px;
+  margin-right: 4px;
+  padding: 4px 9px;
+  text-decoration-color: #fff;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  transition: background 0.15s ease-in-out,
+    text-decoration-color 0.15s ease-in-out;
+}
+
+#buttonHeuristics {
+  margin-right: 0;
+}
+
+.theoryButton:hover {
+  background: #fee;
+  text-decoration-color: #f77;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+}
+
+.theoryButton.active {
+  background: #eef;
+  border-bottom: 0;
+  padding: 4px 9px 8px;
+  text-decoration-color: #77f;
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+}
+
+.practiceButtons {
+  display: flex;
+  margin: 0 0 0 20px;
+}
+
+.practiceButton {
+  background-size: cover;
+  border: 4px solid #224;
+  border-radius: 4px;
+  box-shadow: #ddd 8px 8px 0 -4px, #224 8px 8px;
+  cursor: pointer;
+  flex: none;
+  height: 180px;
+  margin: 0 28px 8px 0;
+  transition: 0.3s;
+  transition-timing-function: ease-in-out;
+  width: 180px;
+}
+
+#buttonTree {
+  background-image: url(/public/images/tree.svg);
+}
+
+#buttonTicTacToe {
+  background-image: url(/public/images/tic-tac-toe.svg);
+}
+
+#buttonConnectFour {
+  background-image: url(/public/images/connect-four.svg);
+}
+
+.practiceButton:hover {
+  box-shadow: #fbb 12px 12px 0 -4px, #224 12px 12px;
+  transform: translate3d(-4px, -4px, 0);
+  transition: 0.2s;
+}
+
+.practiceButton.active {
+  box-shadow: #bbf 12px 12px 0 -4px, #224 12px 12px;
+  transform: translate3d(-4px, -4px, 0);
+  transition: 0.2s;
+}

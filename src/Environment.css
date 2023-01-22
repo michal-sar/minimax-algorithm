@@ -1,0 +1,41 @@
+h1 {
+  color: #224;
+  font-family: "Trap", sans-serif;
+  font-size: 3.3rem;
+  font-weight: 400;
+  margin: 20px;
+  text-decoration-color: #77f;
+  text-decoration-line: underline;
+  text-decoration-thickness: 4px;
+  white-space: nowrap;
+}
+
+h2 {
+  color: #224;
+  font-family: "Trap", sans-serif;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 10px;
+  text-align: center;
+  text-decoration-color: #f77;
+  text-decoration-line: underline;
+  text-decoration-thickness: 4px;
+  white-space: nowrap;
+}
+
+h3 {
+  color: #224;
+  font-family: "Trap", sans-serif;
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin: 20px;
+  text-decoration-color: #77f;
+  text-decoration-line: underline;
+  text-decoration-thickness: 4px;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
