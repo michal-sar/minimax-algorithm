@@ -8,16 +8,6 @@
 }
 
 :root {
-  /* --black: #224;
-  --blue: #77f;
-  --green: #7f7;
-  --grey: #ddd;
-  --light-blue: #7df;
-  --orange: #f97;
-  --pink: #f7d;
-  --purple: #97f;
-  --red: #f77;
-  --yellow: #fd7; */
   --depth-slider-value: 10;
 }
 
@@ -38,7 +28,6 @@ footer {
   font-family: "Nunito", sans-serif;
   font-size: 1.4rem;
   font-weight: 700;
-  /* min-width: 1010px; */
   outline: #224 solid 4px;
   padding: 10px 0;
   text-align: center;
@@ -57,18 +46,13 @@ footer {
   left: 8px;
   margin: 0 0 0 -8px;
   top: 8px;
-  width: 7px; /* ... */
+  width: 7px;
 }
 
 .simplebar-track.simplebar-vertical {
-  width: 23px; /* ... */
+  width: 23px;
 }
 
 .simplebar-wrapper {
-  width: 0; /* ... */
+  width: 0;
 }
-
-/* .simplebar-mask {}
-.simplebar-offset {}
-.simplebar-content-wrapper {}
-[data-simplebar] {} */
