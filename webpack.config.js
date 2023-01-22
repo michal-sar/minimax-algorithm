@@ -7,9 +7,6 @@ module.exports = {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
   },
-  devServer: {
-    contentBase: "./build",
-  },
   module: {
     rules: [
       {
@@ -39,6 +36,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve("./public/index.html"),
+      favicon: path.resolve("./public/images/shortcut-icon.svg"),
     }),
   ],
 };

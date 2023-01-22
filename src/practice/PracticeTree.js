@@ -147,7 +147,7 @@ class Tree {
       text.setAttribute("font-size", "20");
       text.setAttribute("fill", "#224");
       text.setAttribute("text-anchor", "middle");
-      text.setAttribute("alignment-baseline", "central");
+      text.setAttribute("dominant-baseline", "central");
       text.textContent = node.value;
       canvas.appendChild(text);
     }
