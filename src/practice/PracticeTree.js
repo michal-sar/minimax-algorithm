@@ -158,10 +158,7 @@ function calculateY(depth) {
 }
 
 function generateTree(pruferSequence) {
-  pruferSequence = [0, 0, 0, 0, 0, 0]; // <- Enter a specific Prüfer sequence here!
-
-  for (let i = 0; i < pruferSequence.length; i++)
-    pruferSequence[i] = Math.ceil(Math.random() * pruferSequence.length);
+  // pruferSequence = []; // <- Enter a specific Prüfer sequence here!
 
   let vertices = new Array(pruferSequence.length + 2);
   for (let i = 0; i < vertices.length; i++) {
