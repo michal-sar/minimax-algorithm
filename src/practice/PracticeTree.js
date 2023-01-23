@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 const Canvas = React.forwardRef((props, ref) => {
-  return <svg viewBox="0 0 1000 1000" ref={ref} />;
+  return <svg viewBox="0 0 500 513" ref={ref} />;
 });
 Canvas.displayName = "Canvas";
 
@@ -10,44 +10,50 @@ class Tree {
   constructor(id) {
     this.root = new Node(id, 0);
   }
-  *preOrderTraversal(node = this.root) {
+  *dfsPreOrderTraversal(node = this.root) {
     yield node;
     if (node.childrenNodes.length) {
       for (let child of node.childrenNodes)
-        yield* this.preOrderTraversal(child);
+        yield* this.dfsPreOrderTraversal(child);
     }
   }
-  *postOrderTraversal(node = this.root) {
+  *dfsPostOrderTraversal(node = this.root) {
     if (node.childrenNodes.length) {
-      for (let child of node.childrenNodes) {
-        yield* this.postOrderTraversal(child);
-      }
+      for (let child of node.childrenNodes)
+        yield* this.dfsPostOrderTraversal(child);
     }
     yield node;
   }
+  *bfsTraversal(node = this.root) {
+    let queue = [node];
+    while (queue.length) {
+      yield queue[0];
+      for (let child of queue[0].childrenNodes) {
+        queue.push(child);
+      }
+      queue.shift();
+    }
+  }
   insert(parentNodeId, id) {
-    for (let node of this.preOrderTraversal()) {
-      if (node.id == parentNodeId)
+    for (let node of this.dfsPreOrderTraversal()) {
+      if (node.id == parentNodeId) {
         node.childrenNodes.push(new Node(id, node.depth + 1, node.id));
+        return;
+      }
     }
   }
   getWidth(id) {
-    for (let node of this.preOrderTraversal()) {
+    for (let node of this.dfsPreOrderTraversal()) {
       if (node.id == id) return node.width;
     }
   }
   getPosition(id) {
-    for (let node of this.preOrderTraversal()) {
+    for (let node of this.dfsPreOrderTraversal()) {
       if (node.id == id) return node.position;
     }
   }
-  updateTree() {
-    this.updateWidths();
-    this.updatePositions();
-    this.updateValues();
-  }
   updateWidths() {
-    for (let node of this.postOrderTraversal()) {
+    for (let node of this.dfsPostOrderTraversal()) {
       if (node.childrenNodes.length) {
         node.width = 0;
         for (let child of node.childrenNodes) {
@@ -57,97 +63,77 @@ class Tree {
     }
   }
   updatePositions() {
-    let queue = [];
-    queue.push(this.root);
-
     let prevParentNodeId = undefined;
     let prevWidth = 0;
     let prevPosition = 0;
-
-    while (queue.length) {
-      let node = queue[0];
-
-      for (let child of node.childrenNodes) {
-        queue.push(child);
-      }
-
-      if (prevParentNodeId != node.parentNodeId) {
+    for (let node of this.bfsTraversal()) {
+      if (prevParentNodeId == node.parentNodeId) {
+        prevPosition = node.position = prevPosition + prevWidth;
+        prevWidth = node.width;
+      } else {
         prevParentNodeId = node.parentNodeId;
         prevPosition = node.position = this.getPosition(node.parentNodeId);
         prevWidth = node.width;
-      } else {
-        prevPosition = node.position = prevPosition + prevWidth;
-        prevWidth = node.width;
       }
-
-      queue.shift();
     }
   }
-  updateValues() {
-    for (let node of this.preOrderTraversal()) {
+  updateValues(range) {
+    for (let node of this.dfsPreOrderTraversal()) {
       if (!node.childrenNodes.length) {
-        node.value = node.id < 7 ? node.id - 7 : node.id - 6;
+        node.value =
+          node.id >= range / 2 ? node.id - range / 2 : node.id - range / 2 - 1;
       }
     }
   }
   draw(canvas) {
-    for (let node of this.preOrderTraversal()) {
+    let margin = 245.5 - this.root.width * 24;
+
+    let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("stroke", "#224");
+    line.setAttribute("stroke-width", 3);
+
+    for (let node of this.dfsPreOrderTraversal()) {
       if (node.id != this.root.id) {
-        let line = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "line",
-        );
+        line = line.cloneNode(false);
         line.setAttribute(
           "x1",
-          10 +
-            this.getPosition(node.parentNodeId) * 45 +
-            0.5 *
-              (this.getWidth(node.parentNodeId) * 40 +
-                (this.getWidth(node.parentNodeId) - 1) * 5),
+          margin +
+            calculateX(
+              this.getPosition(node.parentNodeId),
+              this.getWidth(node.parentNodeId),
+            ),
         );
-        line.setAttribute(
-          "x2",
-          10 +
-            node.position * 45 +
-            0.5 * (node.width * 40 + (node.width - 1) * 5),
-        );
-        line.setAttribute("y1", 18 + (node.depth - 1) * 60);
-        line.setAttribute("y2", 18 + node.depth * 60);
-        line.setAttribute("stroke", "#224");
-        line.setAttribute("stroke-width", 3);
+        line.setAttribute("x2", margin + calculateX(node.position, node.width));
+        line.setAttribute("y1", calculateY(node.depth - 1));
+        line.setAttribute("y2", calculateY(node.depth));
         canvas.appendChild(line);
       }
     }
-    for (let node of this.preOrderTraversal()) {
-      let circle = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "circle",
-      );
-      circle.setAttribute(
-        "cx",
-        10 +
-          node.position * 45 +
-          0.5 * (node.width * 40 + (node.width - 1) * 5),
-      );
-      circle.setAttribute("cy", 18 + node.depth * 60);
-      circle.setAttribute("r", 15);
-      circle.setAttribute("stroke", "#224");
-      circle.setAttribute("stroke-width", 3);
-      circle.setAttribute("fill", "#fff");
+
+    let circle = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "circle",
+    );
+    circle.setAttribute("r", 15);
+    circle.setAttribute("stroke", "#224");
+    circle.setAttribute("stroke-width", 3);
+    circle.setAttribute("fill", "#fff");
+
+    let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("font-size", "20");
+    text.setAttribute("fill", "#224");
+    text.setAttribute("text-anchor", "middle");
+    text.setAttribute("dominant-baseline", "central");
+
+    for (let node of this.dfsPreOrderTraversal()) {
+      circle = circle.cloneNode(false);
+      circle.setAttribute("cx", margin + calculateX(node.position, node.width));
+      circle.setAttribute("cy", calculateY(node.depth));
       canvas.appendChild(circle);
 
-      let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute(
-        "x",
-        10 +
-          node.position * 45 +
-          0.5 * (node.width * 40 + (node.width - 1) * 5),
-      );
-      text.setAttribute("y", 18 + node.depth * 60);
-      text.setAttribute("font-size", "20");
-      text.setAttribute("fill", "#224");
-      text.setAttribute("text-anchor", "middle");
-      text.setAttribute("dominant-baseline", "central");
+      text = text.cloneNode(false);
+      text.setAttribute("x", margin + calculateX(node.position, node.width));
+      text.setAttribute("y", calculateY(node.depth));
       text.textContent = node.value;
       canvas.appendChild(text);
     }
@@ -159,25 +145,33 @@ class Node {
     this.id = id;
     this.depth = depth;
     this.parentNodeId = parentNodeId;
-    this.width = 1;
     this.childrenNodes = [];
   }
 }
 
-function generateTree(pruferSequence) {
-  // let pruferSequence = new Array(10);
-  // for (let i = 0; i < 10; i++)
-  //   pruferSequence[i] = Math.ceil(Math.random() * 10);
+function calculateX(position, width) {
+  return position * 48 + width * 24 - 7.5;
+}
 
-  // pruferSequence = []; // <-
+function calculateY(depth) {
+  return 16.5 + depth * 48;
+}
+
+function generateTree(pruferSequence) {
+  pruferSequence = [0, 0, 0, 0, 0, 0]; // <- Enter a specific Prüfer sequence here!
+
+  for (let i = 0; i < pruferSequence.length; i++)
+    pruferSequence[i] = Math.ceil(Math.random() * pruferSequence.length);
 
   let vertices = new Array(pruferSequence.length + 2);
-  for (let i = 0; i < vertices.length; i++) vertices[i] = 0;
-  for (let i = 0; i < pruferSequence.length; i++)
+  for (let i = 0; i < vertices.length; i++) {
+    vertices[i] = 0;
+  }
+  for (let i = 0; i < pruferSequence.length; i++) {
     vertices[pruferSequence[i] - 1] += 1;
+  }
 
   let edges = [];
-
   for (let i = 0; i < pruferSequence.length; i++) {
     for (let j = 0; j < vertices.length; j++) {
       if (vertices[j] == 0) {
@@ -188,9 +182,10 @@ function generateTree(pruferSequence) {
       }
     }
   }
-
   for (let i = 0; i < pruferSequence.length; i++) {
-    if (vertices[i] == 0) edges.push([i + 1, vertices.length]);
+    if (vertices[i] == 0) {
+      edges.push([i + 1, vertices.length]);
+    }
   }
 
   let occurrences = new Map();
@@ -208,11 +203,9 @@ function generateTree(pruferSequence) {
   let tree = new Tree(rootId);
 
   let potentialParentNodeIds = [rootId];
-
   while (edges.length) {
     let newPotentialParentNodeIds = [];
     let newEdges = edges;
-
     for (let edge of edges) {
       if (potentialParentNodeIds.includes(edge[0])) {
         tree.insert(edge[0], edge[1]);
@@ -225,12 +218,13 @@ function generateTree(pruferSequence) {
         newEdges = newEdges.filter((element) => element != edge);
       }
     }
-
     potentialParentNodeIds = newPotentialParentNodeIds;
     edges = newEdges;
   }
 
-  tree.updateTree();
+  tree.updateWidths();
+  tree.updatePositions();
+  tree.updateValues(vertices.length);
 
   return tree;
 }
@@ -242,8 +236,8 @@ function PracticeTree(props) {
   useEffect(() => {
     canvas.current.innerHTML = "";
 
-    for (let i = 0; i < 10; i++)
-      pruferSequence[i] = Math.ceil(Math.random() * 10);
+    for (let i = 0; i < pruferSequence.length; i++)
+      pruferSequence[i] = Math.ceil(Math.random() * pruferSequence.length);
 
     let tree = generateTree(pruferSequence);
     tree.draw(canvas.current);
@@ -258,11 +252,18 @@ function PracticeTree(props) {
 
   return (
     <div className="practiceContainer">
-      <h3>Tree</h3>
-      <p>Alpha-beta pruning: {alphaBetaPruning ? "On" : "Off"}</p>
-      <p>Depth limit: {depthLimit ? depthLimitValue : "Off"}</p>
-      <p>{Math.random()}</p>
+      <h3 className="practiceTitle">Tree</h3>
+      <p className="practiceText">
+        Alpha-beta pruning: {alphaBetaPruning ? "On" : "Off"}
+      </p>
+      <p className="practiceText">
+        Depth limit: {depthLimit ? depthLimitValue : "Off"}
+      </p>
+      <p className="practiceText">{Math.random()}</p>
       <Canvas ref={canvas} />
+      <h4>Code:</h4>
+      <h4>Number of visited nodes:</h4>
+      <h4>Decision:</h4>
     </div>
   );
 }
@@ -273,6 +274,6 @@ PracticeTree.propTypes = {
   depthLimitValue: PropTypes.number,
 };
 
-let pruferSequence = new Array(10);
+let pruferSequence = new Array(10); // n + 2 <- Change the number of nodes here!
 
 export default PracticeTree;

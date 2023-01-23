@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 const Canvas = React.forwardRef((props, ref) => {
-  return <svg viewBox="0 0 600 600" ref={ref} />;
+  return <svg viewBox="0 0 500 500" ref={ref} />;
 });
 Canvas.displayName = "Canvas";
 
@@ -82,11 +82,16 @@ function PracticeConnectFour(props) {
 
   return (
     <div className="practiceContainer">
-      <h3>Connect four</h3>
-      <p>Alpha-beta pruning: {alphaBetaPruning ? "On" : "Off"}</p>
-      <p>Depth limit: {depthLimit ? depthLimitValue : "Off"}</p>
-      <p>{Math.random()}</p>
+      <h3 className="practiceTitle">Connect four</h3>
+      <p className="practiceText">
+        Alpha-beta pruning: {alphaBetaPruning ? "On" : "Off"}
+      </p>
+      <p className="practiceText">
+        Depth limit: {depthLimit ? depthLimitValue : "Off"}
+      </p>
+      <p className="practiceText">{Math.random()}</p>
       <Canvas ref={canvas} />
+      <h4>Game tree:</h4>
     </div>
   );
 }

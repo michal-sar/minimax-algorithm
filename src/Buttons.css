@@ -54,7 +54,7 @@
 }
 
 .practiceButton {
-  background-size: cover;
+  background-color: #fff;
   border: 4px solid #224;
   border-radius: 4px;
   box-shadow: #ddd 8px 8px 0 -4px, #224 8px 8px;
@@ -67,18 +67,6 @@
   width: 180px;
 }
 
-#buttonTree {
-  background-image: url(/public/images/tree.svg);
-}
-
-#buttonTicTacToe {
-  background-image: url(/public/images/tic-tac-toe.svg);
-}
-
-#buttonConnectFour {
-  background-image: url(/public/images/connect-four.svg);
-}
-
 .practiceButton:hover {
   box-shadow: #fbb 12px 12px 0 -4px, #224 12px 12px;
   transform: translate3d(-4px, -4px, 0);
@@ -89,4 +77,9 @@
   box-shadow: #bbf 12px 12px 0 -4px, #224 12px 12px;
   transform: translate3d(-4px, -4px, 0);
   transition: 0.2s;
+}
+
+.practiceButton > svg {
+  display: inline-block;
+  vertical-align: middle;
 }

@@ -5,7 +5,7 @@
   box-shadow: #ddd 8px 8px 0 -4px, #224 8px 8px;
   flex: none;
   position: sticky;
-  margin: 41px 28px calc(100vh - 358px) 0;
+  margin: 41px 28px max(calc(100vh - 358px), 32px) 0;
   top: 139px;
   width: 330px;
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 const Canvas = React.forwardRef((props, ref) => {
-  return <svg viewBox="0 0 600 600" ref={ref} />;
+  return <svg viewBox="0 0 500 500" ref={ref} />;
 });
 Canvas.displayName = "Canvas";
 
@@ -17,34 +17,25 @@ function drawBoard(canvas, x1, y1) {
   line.setAttribute("stroke-linecap", "round");
   canvas.appendChild(line);
 
-  line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line = line.cloneNode(false);
   line.setAttribute("x1", x1 + 84.5);
   line.setAttribute("x2", x1 + 84.5);
   line.setAttribute("y1", y1 + 3);
   line.setAttribute("y2", y1 + 123);
-  line.setAttribute("stroke", "#224");
-  line.setAttribute("stroke-width", 3);
-  line.setAttribute("stroke-linecap", "round");
   canvas.appendChild(line);
 
-  line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line = line.cloneNode(false);
   line.setAttribute("x1", x1 + 3);
   line.setAttribute("x2", x1 + 123);
   line.setAttribute("y1", y1 + 41.5);
   line.setAttribute("y2", y1 + 41.5);
-  line.setAttribute("stroke", "#224");
-  line.setAttribute("stroke-width", 3);
-  line.setAttribute("stroke-linecap", "round");
   canvas.appendChild(line);
 
-  line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line = line.cloneNode(false);
   line.setAttribute("x1", x1 + 3);
   line.setAttribute("x2", x1 + 123);
   line.setAttribute("y1", y1 + 84.5);
   line.setAttribute("y2", y1 + 84.5);
-  line.setAttribute("stroke", "#224");
-  line.setAttribute("stroke-width", 3);
-  line.setAttribute("stroke-linecap", "round");
   canvas.appendChild(line);
 }
 
@@ -117,10 +108,15 @@ function PracticeTicTacToe(props) {
   return (
     <div className="practiceContainer">
       <h3 className="practiceTitle">Tic-tac-toe</h3>
-      <p>Alpha-beta pruning: {alphaBetaPruning ? "On" : "Off"}</p>
-      <p>Depth limit: {depthLimit ? depthLimitValue : "Off"}</p>
-      <p>{Math.random()}</p>
+      <p className="practiceText">
+        Alpha-beta pruning: {alphaBetaPruning ? "On" : "Off"}
+      </p>
+      <p className="practiceText">
+        Depth limit: {depthLimit ? depthLimitValue : "Off"}
+      </p>
+      <p className="practiceText">{Math.random()}</p>
       <Canvas ref={canvas} />
+      <h4>Game tree:</h4>
     </div>
   );
 }
