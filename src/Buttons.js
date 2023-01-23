@@ -55,7 +55,7 @@ function PracticeButtons(props) {
         <svg viewBox="0 0 189 189">
           <line
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             x1="94.5"
             x2="22.5"
             y1="22.5"
@@ -63,7 +63,7 @@ function PracticeButtons(props) {
           ></line>
           <line
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             x1="94.5"
             x2="70.5"
             y1="22.5"
@@ -71,7 +71,7 @@ function PracticeButtons(props) {
           ></line>
           <line
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             x1="94.5"
             x2="142.5"
             y1="22.5"
@@ -79,7 +79,7 @@ function PracticeButtons(props) {
           ></line>
           <line
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             x1="70.5"
             x2="70.5"
             y1="70.5"
@@ -87,7 +87,7 @@ function PracticeButtons(props) {
           ></line>
           <line
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             x1="142.5"
             x2="118.5"
             y1="70.5"
@@ -95,7 +95,7 @@ function PracticeButtons(props) {
           ></line>
           <line
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             x1="142.5"
             x2="166.5"
             y1="70.5"
@@ -103,7 +103,7 @@ function PracticeButtons(props) {
           ></line>
           <line
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             x1="118.5"
             x2="118.5"
             y1="118.5"
@@ -112,7 +112,7 @@ function PracticeButtons(props) {
           <circle
             r="15"
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             fill="#fff"
             cx="94.5"
             cy="23"
@@ -120,7 +120,7 @@ function PracticeButtons(props) {
           <circle
             r="15"
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             fill="#fff"
             cx="22.5"
             cy="70.5"
@@ -128,7 +128,7 @@ function PracticeButtons(props) {
           <circle
             r="15"
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             fill="#fff"
             cx="70.5"
             cy="70.5"
@@ -136,7 +136,7 @@ function PracticeButtons(props) {
           <circle
             r="15"
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             fill="#fff"
             cx="142.5"
             cy="70.5"
@@ -144,7 +144,7 @@ function PracticeButtons(props) {
           <circle
             r="15"
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             fill="#fff"
             cx="70.5"
             cy="118.5"
@@ -152,7 +152,7 @@ function PracticeButtons(props) {
           <circle
             r="15"
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             fill="#fff"
             cx="118.5"
             cy="118.5"
@@ -160,7 +160,7 @@ function PracticeButtons(props) {
           <circle
             r="15"
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             fill="#fff"
             cx="166.5"
             cy="118.5"
@@ -168,7 +168,7 @@ function PracticeButtons(props) {
           <circle
             r="15"
             stroke="#224"
-            strokeWidth="3"
+            strokeWidth="4"
             fill="#fff"
             cx="118.5"
             cy="166.5"

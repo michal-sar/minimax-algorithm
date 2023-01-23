@@ -80,6 +80,10 @@
 }
 
 .practiceButton > svg {
-  display: inline-block;
   vertical-align: middle;
+}
+
+.practiceButton > svg > text {
+  font-family: "Nunito", sans-serif;
+  font-weight: 900;
 }

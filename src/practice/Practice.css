@@ -15,7 +15,7 @@
   float: left;
 }
 
-text {
+.practiceContainer > svg > text {
   font-family: "Nunito", sans-serif;
   font-weight: 700;
 }
