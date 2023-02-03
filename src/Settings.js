@@ -63,7 +63,12 @@ function Settings(props) {
         value={depthLimitValue}
         autoComplete="off"
       ></input>
-      <span className="depthLimitValue">{depthLimitValue}</span>
+      <span
+        className="depthLimitValue"
+        style={depthLimit ? {} : { opacity: "0.5" }}
+      >
+        {depthLimitValue}
+      </span>
     </div>
   );
 }

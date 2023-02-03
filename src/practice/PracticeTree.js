@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 const Canvas = React.forwardRef((props, ref) => {
-  return <svg viewBox="0 0 500 513" ref={ref} />;
+  return <svg viewBox="0 0 400 513" ref={ref} />;
 });
 Canvas.displayName = "Canvas";
 
@@ -81,12 +81,12 @@ class Tree {
     for (let node of this.dfsPreOrderTraversal()) {
       if (!node.childrenNodes.length) {
         node.value =
-          node.id >= range / 2 ? node.id - range / 2 : node.id - range / 2 - 1;
+          node.id > range / 2 ? node.id - range / 2 : node.id - range / 2 - 1;
       }
     }
   }
   draw(canvas) {
-    let margin = 245.5 - this.root.width * 24;
+    let margin = 195.5 - this.root.width * 24;
 
     let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line.setAttribute("stroke", "#224");
@@ -124,6 +124,8 @@ class Tree {
     text.setAttribute("fill", "#224");
     text.setAttribute("text-anchor", "middle");
     text.setAttribute("dominant-baseline", "central");
+    text.setAttribute("font-family", "Nunito, sans-serif");
+    text.setAttribute("font-weight", "900");
 
     for (let node of this.dfsPreOrderTraversal()) {
       circle = circle.cloneNode(false);
@@ -250,13 +252,6 @@ function PracticeTree(props) {
   return (
     <div className="practiceContainer">
       <h3 className="practiceTitle">Tree</h3>
-      <p className="practiceText">
-        Alpha-beta pruning: {alphaBetaPruning ? "On" : "Off"}
-      </p>
-      <p className="practiceText">
-        Depth limit: {depthLimit ? depthLimitValue : "Off"}
-      </p>
-      <p className="practiceText">{Math.random()}</p>
       <Canvas ref={canvas} />
       <h4>Code:</h4>
       <h4>Number of visited nodes:</h4>

@@ -15,7 +15,7 @@
   cursor: pointer;
   flex: 1 0 auto;
   font-family: "Nunito", sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.09rem;
   font-weight: 700;
   height: 45px;
   margin-bottom: -4px;
@@ -81,9 +81,4 @@
 
 .practiceButton > svg {
   vertical-align: middle;
-}
-
-.practiceButton > svg > text {
-  font-family: "Nunito", sans-serif;
-  font-weight: 900;
 }

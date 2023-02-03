@@ -34,6 +34,13 @@ footer {
   width: 100%;
 }
 
+a {
+  color: #77f;
+  text-decoration-color: #77f;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
 .simplebar-track.simplebar-vertical .simplebar-scrollbar:before {
   background: #ddd;
   opacity: 1;

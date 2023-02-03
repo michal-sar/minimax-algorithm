@@ -70,9 +70,8 @@ function TheoryAlphaBetaPruning() {
         <b>end</b>
       </div>
       <p>
-        Initial call:
+        Initial call:{" "}
         <span className="monospaced">
-          {" "}
           MiniMaxAlphaBeta(n, <i>true</i>, -∞, +∞)
         </span>
         .

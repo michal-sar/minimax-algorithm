@@ -122,6 +122,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 input[type="range"]:disabled {
+  opacity: 0.5;
   pointer-events: none;
 }
 

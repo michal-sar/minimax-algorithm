@@ -85,9 +85,8 @@ function TheoryHeuristics() {
         <b>end</b>
       </div>
       <p>
-        Initial call:
+        Initial call:{" "}
         <span className="monospaced">
-          {" "}
           MiniMax(n, d, <i>true</i>)
         </span>
         .
@@ -150,9 +149,8 @@ function TheoryHeuristics() {
         <b>end</b>
       </div>
       <p>
-        Initial call:
+        Initial call:{" "}
         <span className="monospaced">
-          {" "}
           MiniMaxAlphaBeta(n, d, <i>true</i>, -∞, +∞)
         </span>
         .

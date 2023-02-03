@@ -9,13 +9,11 @@
 }
 
 .practiceTitle,
-.practiceText,
 .practiceContainer > svg {
-  width: 50%;
   float: left;
+  width: 50%;
 }
 
-.practiceContainer > svg > text {
-  font-family: "Nunito", sans-serif;
-  font-weight: 700;
+.practiceContainer > svg {
+  margin: 20px;
 }

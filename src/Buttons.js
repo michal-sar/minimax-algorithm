@@ -8,7 +8,7 @@ function TheoryButtons(props) {
     <div className="theoryButtons">
       <button
         className={`theoryButton ${
-          theory == "MiniMaxAlgorithm" ? " active" : ""
+          theory == "MiniMaxAlgorithm" ? "active" : ""
         }`}
         onClick={() => setTheory("MiniMaxAlgorithm")}
       >
@@ -16,20 +16,20 @@ function TheoryButtons(props) {
       </button>
       <button
         className={`theoryButton ${
-          theory == "AlphaBetaPruning" ? " active" : ""
+          theory == "AlphaBetaPruning" ? "active" : ""
         }`}
         onClick={() => setTheory("AlphaBetaPruning")}
       >
         Alpha-beta pruning
       </button>
       <button
-        className={`theoryButton ${theory == "DepthLimit" ? " active" : ""}`}
+        className={`theoryButton ${theory == "DepthLimit" ? "active" : ""}`}
         onClick={() => setTheory("DepthLimit")}
       >
         Depth limit
       </button>
       <button
-        className={`theoryButton ${theory == "Heuristics" ? " active" : ""}`}
+        className={`theoryButton ${theory == "Heuristics" ? "active" : ""}`}
         onClick={() => setTheory("Heuristics")}
         id="buttonHeuristics"
       >
@@ -49,7 +49,7 @@ function PracticeButtons(props) {
   return (
     <div className="practiceButtons">
       <button
-        className={`practiceButton ${practice == "Tree" ? " active" : ""}`}
+        className={`practiceButton ${practice == "Tree" ? "active" : ""}`}
         onClick={() => setPractice("Tree")}
       >
         <svg viewBox="0 0 189 189">
@@ -180,6 +180,8 @@ function PracticeButtons(props) {
             dominantBaseline="central"
             x="22.5"
             y="70.5"
+            fontFamily="Nunito, sans-serif"
+            fontWeight="900"
           >
             1
           </text>
@@ -190,6 +192,8 @@ function PracticeButtons(props) {
             dominantBaseline="central"
             x="70.5"
             y="118.5"
+            fontFamily="Nunito, sans-serif"
+            fontWeight="900"
           >
             -2
           </text>
@@ -200,6 +204,8 @@ function PracticeButtons(props) {
             dominantBaseline="central"
             x="166.5"
             y="118.5"
+            fontFamily="Nunito, sans-serif"
+            fontWeight="900"
           >
             -4
           </text>
@@ -210,13 +216,15 @@ function PracticeButtons(props) {
             dominantBaseline="central"
             x="118.5"
             y="167"
+            fontFamily="Nunito, sans-serif"
+            fontWeight="900"
           >
             4
           </text>
         </svg>
       </button>
       <button
-        className={`practiceButton ${practice == "TicTacToe" ? " active" : ""}`}
+        className={`practiceButton ${practice == "TicTacToe" ? "active" : ""}`}
         onClick={() => setPractice("TicTacToe")}
       >
         <svg viewBox="0 0 140 140">
@@ -312,7 +320,7 @@ function PracticeButtons(props) {
       </button>
       <button
         className={`practiceButton ${
-          practice == "ConnectFour" ? " active" : ""
+          practice == "ConnectFour" ? "active" : ""
         }`}
         onClick={() => setPractice("ConnectFour")}
       >

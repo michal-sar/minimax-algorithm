@@ -8,6 +8,8 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Environment />
-    <footer>© Copyright - Michał Sar</footer>
+    <footer>
+      © Copyright – <a href="https://github.com/michal-sar">Michał Sar</a>
+    </footer>
   </React.StrictMode>,
 );
