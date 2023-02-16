@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 const Canvas = React.forwardRef((props, ref) => {
-  return <svg viewBox="0 0 400 513" ref={ref} />;
+  return <svg className="tree" viewBox="0 0 400 513" ref={ref} />;
 });
 Canvas.displayName = "Canvas";
 
@@ -92,24 +92,6 @@ class Tree {
     line.setAttribute("stroke", "#224");
     line.setAttribute("stroke-width", 3);
 
-    for (let node of this.dfsPreOrderTraversal()) {
-      if (node.id != this.root.id) {
-        line = line.cloneNode(false);
-        line.setAttribute(
-          "x1",
-          margin +
-            calculateX(
-              this.getPosition(node.parentNodeId),
-              this.getWidth(node.parentNodeId),
-            ),
-        );
-        line.setAttribute("x2", margin + calculateX(node.position, node.width));
-        line.setAttribute("y1", calculateY(node.depth - 1));
-        line.setAttribute("y2", calculateY(node.depth));
-        canvas.appendChild(line);
-      }
-    }
-
     let circle = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "circle",
@@ -128,6 +110,22 @@ class Tree {
     text.setAttribute("font-weight", "900");
 
     for (let node of this.dfsPreOrderTraversal()) {
+      if (node.id != this.root.id) {
+        line = line.cloneNode(false);
+        line.setAttribute(
+          "x1",
+          margin +
+            calculateX(
+              this.getPosition(node.parentNodeId),
+              this.getWidth(node.parentNodeId),
+            ),
+        );
+        line.setAttribute("x2", margin + calculateX(node.position, node.width));
+        line.setAttribute("y1", calculateY(node.depth - 1));
+        line.setAttribute("y2", calculateY(node.depth));
+        canvas.prepend(line);
+      }
+
       circle = circle.cloneNode(false);
       circle.setAttribute("cx", margin + calculateX(node.position, node.width));
       circle.setAttribute("cy", calculateY(node.depth));
@@ -253,7 +251,7 @@ function PracticeTree(props) {
     <div className="practiceContainer">
       <h3 className="practiceTitle">Tree</h3>
       <Canvas ref={canvas} />
-      <h4>Code:</h4>
+      <h4 className="codeLabel">Code:</h4>
       <h4>Number of visited nodes:</h4>
       <h4>Decision:</h4>
     </div>

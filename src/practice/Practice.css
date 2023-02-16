@@ -8,12 +8,214 @@
   overflow: hidden;
 }
 
-.practiceTitle,
-.practiceContainer > svg {
+.practiceContainer > .tree {
   float: left;
-  width: 50%;
+  margin-left: 20px;
+  width: calc(50% - 20px);
 }
 
-.practiceContainer > svg {
-  margin: 20px;
+.practiceContainer > .codeLabel {
+  margin: -46px 0 0 50%;
+}
+
+.game,
+.gameComplete,
+.gameReset {
+  float: left;
+  margin-left: 20px;
+  width: calc(30% - 20px);
+}
+
+.practiceContainer > .gameTreeLabel {
+  margin: -46px 0 0 30%;
+}
+
+.practiceContainer > .gameTree {
+  float: right;
+  width: 70%;
+}
+
+.practiceContainer > svg > text {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.lineX {
+  animation-duration: 0.25s;
+  animation-fill-mode: forwards;
+  animation-name: draw;
+  animation-timing-function: linear;
+  stroke-dasharray: 50%;
+  stroke-dashoffset: 50%;
+}
+
+.pathO {
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-name: draw;
+  animation-timing-function: linear;
+  stroke-dasharray: 100%;
+  stroke-dashoffset: 100%;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.circle0 {
+  animation-duration: 0.125s;
+  animation-fill-mode: forwards;
+  animation-name: fall0;
+  animation-timing-function: linear;
+}
+
+.circle1 {
+  animation-duration: 0.25s;
+  animation-fill-mode: forwards;
+  animation-name: fall1;
+  animation-timing-function: linear;
+}
+
+.circle2 {
+  animation-duration: 0.375s;
+  animation-fill-mode: forwards;
+  animation-name: fall2;
+  animation-timing-function: linear;
+}
+
+.circle3 {
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-name: fall3;
+  animation-timing-function: linear;
+}
+
+.circle4 {
+  animation-duration: 0.625s;
+  animation-fill-mode: forwards;
+  animation-name: fall4;
+  animation-timing-function: linear;
+}
+
+.circle5 {
+  animation-duration: 0.75s;
+  animation-fill-mode: forwards;
+  animation-name: fall5;
+  animation-timing-function: linear;
+}
+
+@keyframes fall0 {
+  from {
+    transform: translate3d(0, -38px, 0);
+  }
+}
+
+@keyframes fall1 {
+  from {
+    transform: translate3d(0, -76px, 0);
+  }
+}
+
+@keyframes fall2 {
+  from {
+    transform: translate3d(0, -114px, 0);
+  }
+}
+
+@keyframes fall3 {
+  from {
+    transform: translate3d(0, -152px, 0);
+  }
+}
+
+@keyframes fall4 {
+  from {
+    transform: translate3d(0, -190px, 0);
+  }
+}
+
+@keyframes fall5 {
+  from {
+    transform: translate3d(0, -228px, 0);
+  }
+}
+
+.gameComplete > g {
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-name: decreaseOpacity1;
+  animation-timing-function: linear;
+}
+
+.gameComplete > .resultText {
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-name: fadeIn;
+  animation-timing-function: linear;
+}
+
+.gameReset > g {
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-name: decreaseOpacity2;
+  animation-timing-function: linear;
+}
+
+.gameReset > .board {
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-name: increaseOpacity1;
+  animation-timing-function: linear;
+}
+
+.gameReset > .resultText {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-name: fadeOut;
+  animation-timing-function: linear;
+}
+
+@keyframes increaseOpacity1 {
+  from {
+    opacity: 0.5;
+  }
+}
+
+@keyframes increaseOpacity2 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes decreaseOpacity1 {
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes decreaseOpacity2 {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
 }

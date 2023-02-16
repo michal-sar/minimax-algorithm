@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./Settings.css";
 
@@ -12,6 +12,18 @@ function Settings(props) {
     setDepthLimit,
     setDepthLimitValue,
   } = props;
+
+  const [top, setTop] = useState(139);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setTop(Math.min(139 + window.pageYOffset * 0.5, 468)); /* ... */
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const updateAlphaBetaPruning = (event) => {
     setAlphaBetaPruning(event.currentTarget.checked);
@@ -29,7 +41,7 @@ function Settings(props) {
   };
 
   return (
-    <div className="settings">
+    <div className="settings" style={{ top: `${top}px` }}>
       <h2>Settings:</h2>
       <div className="settingsGrid">
         <span className="setting">Alpha-beta pruning</span>

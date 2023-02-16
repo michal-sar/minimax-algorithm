@@ -5,8 +5,9 @@
   box-shadow: #ddd 8px 8px 0 -4px, #224 8px 8px;
   flex: none;
   position: sticky;
-  margin: 41px 28px max(calc(100vh - 358px), 32px) 0;
-  top: 139px;
+  margin-bottom: max(calc(100vh - 358px), 32px);
+  margin-left: 0;
+  margin-right: 28px;
   width: 330px;
 }
 
@@ -24,6 +25,9 @@
   font-size: 1.4rem;
   font-weight: 700;
   white-space: nowrap;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 .toggleSwitchContainer {
