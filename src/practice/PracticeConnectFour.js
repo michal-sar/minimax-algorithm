@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const GameCanvas = React.forwardRef((props, ref) => {
   return (
-    <svg className="game" viewBox="0 -19 278 259">
+    <svg className="game" viewBox="0 -19 278 278">
       <g ref={ref} />
     </svg>
   );
@@ -555,10 +555,11 @@ function PracticeConnectFour(/* props */) {
   }, []);
 
   return (
-    <div className="practiceContainer">
-      <h3>Connect four</h3>
-      <GameCanvas ref={gameCanvas} />
-      <h4 className="gameTreeLabel">Game tree:</h4>
+    <div className="gameContainer">
+      <div className="gameContainerChild">
+        <h3 className="practiceTitle">Connect four</h3>
+        <GameCanvas ref={gameCanvas} />
+      </div>
       <TreeCanvas ref={treeCanvas} />
     </div>
   );

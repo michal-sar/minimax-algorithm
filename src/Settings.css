@@ -4,10 +4,10 @@
   border-radius: 4px;
   box-shadow: #ddd 8px 8px 0 -4px, #224 8px 8px;
   flex: none;
-  position: sticky;
-  margin-bottom: max(calc(100vh - 358px), 32px);
+  position: relative;
   margin-left: 0;
   margin-right: 28px;
+  transition: top 0.5s;
   width: 330px;
 }
 

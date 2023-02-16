@@ -17,7 +17,7 @@ function Settings(props) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setTop(Math.min(139 + window.pageYOffset * 0.5, 468)); /* ... */
+      setTop(Math.min(139 + window.pageYOffset * 2.784, 1124.54));
     };
     window.addEventListener("scroll", handleScroll);
     return () => {

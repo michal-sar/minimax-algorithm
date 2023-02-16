@@ -536,10 +536,11 @@ function PracticeTicTacToe(/* props */) {
   }, []);
 
   return (
-    <div className="practiceContainer">
-      <h3 className="practiceTitle">Tic-tac-toe</h3>
-      <GameCanvas ref={gameCanvas} />
-      <h4 className="gameTreeLabel">Game tree:</h4>
+    <div className="gameContainer">
+      <div className="gameContainerChild">
+        <h3 className="practiceTitle">Tic-tac-toe</h3>
+        <GameCanvas ref={gameCanvas} />
+      </div>
       <TreeCanvas ref={treeCanvas} />
     </div>
   );
