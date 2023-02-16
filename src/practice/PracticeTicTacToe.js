@@ -255,21 +255,15 @@ function drawGameTreeNode(treeCanvas, board, x, y) {
   }
 }
 
-async function refocusGameTree(treeCanvas, board, index) {
-  let newIndex =
-    index - board.slice(0, index).filter((tile) => tile != null).length;
-
-  let moves = board.filter((tile) => tile == null).length + 1;
-
-  let margin = ((10 - moves) * 126) / (moves + 1);
-
+async function refocusGameTree(treeCanvas, gainX, gainY) {
   let newX = currentX;
   let newY = currentY;
-  let gainX = (newIndex * (126 + margin) + 63 + margin - 630) / 25;
-  let gainY = 378 / 25;
 
-  currentY = newY - gainY * 25;
-  currentX = newX - gainX * 25;
+  currentY -= gainY;
+  currentX -= gainX;
+
+  gainX /= 25;
+  gainY /= 25;
 
   for (let i = 0; i < 25; i++) {
     newX -= gainX;
@@ -410,7 +404,19 @@ function PracticeTicTacToe(/* props */) {
   useEffect(() => {
     drawBoard(gameCanvas.current.parentNode);
 
-    let busy, board;
+    currentX = 0;
+    currentY = 0;
+
+    let busy,
+      board,
+      newIndex,
+      newMove,
+      moves,
+      margin,
+      gainX,
+      gainY,
+      nextX,
+      nextY;
 
     let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     rect.setAttribute("width", 40);
@@ -431,38 +437,33 @@ function PracticeTicTacToe(/* props */) {
         drawX(gameCanvas.current, index);
         board[index] = "x";
 
+        newIndex =
+          index - board.slice(0, index).filter((tile) => tile != null).length;
+        moves = board.filter((tile) => tile == null).length + 1;
+        margin = ((10 - moves) * 126) / (moves + 1);
+        gainX = newIndex * (126 + margin) + 63 + margin - 630;
+        gainY = 378;
+
         if (checkVictory(board)) {
-          await refocusGameTree(treeCanvas.current, board, index);
+          await refocusGameTree(treeCanvas.current, gainX, gainY);
           await handleGameOver(gameCanvas.current, "x");
           start();
           return;
         }
 
         if (!board.some((tile) => tile == null)) {
-          await refocusGameTree(treeCanvas.current, board, index);
+          await refocusGameTree(treeCanvas.current, gainX, gainY);
           await handleGameOver(gameCanvas.current, "draw");
           start();
           return;
         }
 
-        let newIndex =
-          index - board.slice(0, index).filter((tile) => tile != null).length;
-
-        let moves = board.filter((tile) => tile == null).length + 1;
-
-        let margin = ((10 - moves) * 126) / (moves + 1);
-
-        let newX = currentX;
-        let newY = currentY;
-        let gainX = (newIndex * (126 + margin) + 63 + margin - 630) / 25;
-        let gainY = 378 / 25;
-
-        let nextY = newY - gainY * 25;
-        let nextX = newX - gainX * 25;
+        nextY = currentY - gainY;
+        nextX = currentX - gainX;
 
         expandGameTree(treeCanvas.current, board, nextX, nextY);
 
-        await refocusGameTree(treeCanvas.current, board, index);
+        await refocusGameTree(treeCanvas.current, gainX, gainY);
 
         let move;
         do {
@@ -471,31 +472,26 @@ function PracticeTicTacToe(/* props */) {
         drawO(gameCanvas.current, move);
         board[move] = "o";
 
+        newMove =
+          move - board.slice(0, move).filter((tile) => tile != null).length;
+        moves = board.filter((tile) => tile == null).length + 1;
+        margin = ((10 - moves) * 126) / (moves + 1);
+        gainX = newMove * (126 + margin) + 63 + margin - 630;
+        gainY = 378;
+
         if (checkVictory(board)) {
-          await refocusGameTree(treeCanvas.current, board, move);
+          await refocusGameTree(treeCanvas.current, gainX, gainY);
           await handleGameOver(gameCanvas.current, "o");
           start();
           return;
         }
 
-        newIndex =
-          move - board.slice(0, move).filter((tile) => tile != null).length;
-
-        moves = board.filter((tile) => tile == null).length + 1;
-
-        margin = ((10 - moves) * 126) / (moves + 1);
-
-        newX = currentX;
-        newY = currentY;
-        gainX = (newIndex * (126 + margin) + 63 + margin - 630) / 25;
-        gainY = 378 / 25;
-
-        nextY = newY - gainY * 25;
-        nextX = newX - gainX * 25;
+        nextY = currentY - gainY;
+        nextX = currentX - gainX;
 
         expandGameTree(treeCanvas.current, board, nextX, nextY);
 
-        await refocusGameTree(treeCanvas.current, board, move);
+        await refocusGameTree(treeCanvas.current, gainX, gainY);
 
         busy = false;
       };
@@ -506,8 +502,8 @@ function PracticeTicTacToe(/* props */) {
       gameCanvas.current.innerHTML = "";
 
       if (currentY) {
-        let gainX = currentX / 50;
-        let gainY = currentY / 50;
+        gainX = currentX / 50;
+        gainY = currentY / 50;
         let newX = currentX;
         let newY = currentY;
         for (let i = 0; i < 50; i++) {
@@ -519,9 +515,6 @@ function PracticeTicTacToe(/* props */) {
           );
           await new Promise((r) => setTimeout(r, 25));
         }
-
-        currentY = newY;
-        currentX = newX;
       } else treeCanvas.current.setAttribute("transform", "translate(0, 0)");
 
       treeCanvas.current.innerHTML = "";
@@ -535,7 +528,7 @@ function PracticeTicTacToe(/* props */) {
         board[i] = null;
       }
 
-      drawGameTreeNode(treeCanvas.current, board, currentX + 630, currentY);
+      drawGameTreeNode(treeCanvas.current, board, 630, 0);
       expandGameTree(treeCanvas.current, board, 0, 0);
     }
 

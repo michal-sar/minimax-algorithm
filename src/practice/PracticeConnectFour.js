@@ -251,23 +251,15 @@ function drawGameTreeNode(treeCanvas, board, x, y) {
   }
 }
 
-async function refocusGameTree(treeCanvas, board, index) {
-  let newIndex = index;
-  for (let i = 0; i < index; i++) {
-    if (board[i][5]) newIndex--;
-  }
-
-  let moves = 0;
-  for (let i = 0; i < 7; i++) {
-    if (!board[i][5]) moves++;
-  }
-
-  let margin = ((10 - moves) * 278) / (moves + 1);
-
+async function refocusGameTree(treeCanvas, gainX, gainY) {
   let newX = currentX;
   let newY = currentY;
-  let gainX = (newIndex * (278 + margin) + 139 + margin - 1390) / 25;
-  let gainY = 834 / 25;
+
+  currentY -= gainY;
+  currentX -= gainX;
+
+  gainX /= 25;
+  gainY /= 25;
 
   for (let i = 0; i < 25; i++) {
     newX -= gainX;
@@ -275,12 +267,9 @@ async function refocusGameTree(treeCanvas, board, index) {
     treeCanvas.setAttribute("transform", `translate(${newX}, ${newY})`);
     await new Promise((r) => setTimeout(r, 25));
   }
-
-  currentY = newY;
-  currentX = newX;
 }
 
-function expandGameTree(treeCanvas, board, player) {
+function expandGameTree(treeCanvas, board, player, nextX, nextY) {
   let children = [];
 
   for (let i = 0; i < 7; i++) {
@@ -291,8 +280,8 @@ function expandGameTree(treeCanvas, board, player) {
     }
   }
 
-  let x1 = -currentX + 1390;
-  let y1 = -currentY + 278;
+  let x1 = -nextX + 1390;
+  let y1 = -nextY + 278;
   let x2, y2, newX1, newX2, newY1, newY2;
   let margin = ((10 - children.length) * 278) / (children.length + 1);
 
@@ -317,14 +306,14 @@ function expandGameTree(treeCanvas, board, player) {
   text.setAttribute("font-weight", "900");
 
   for (let i = 0; i < children.length; i++) {
-    x2 = -currentX + i * (278 + margin) + 139 + margin;
-    y2 = -currentY + 834; /* ... */
+    x2 = -nextX + i * (278 + margin) + 139 + margin;
+    y2 = -nextY + 834;
 
     newX1 = x1 * 0.85 + x2 * 0.15;
     newY1 =
       y1 * 0.9 +
       y2 * 0.1 -
-      Math.pow(Math.abs(newX1 + (currentX - 1390)), 2) / 1390;
+      Math.pow(Math.abs(newX1 + (nextX - 1390)), 2) / 1390;
     newX2 = x2 * 0.95 + x1 * 0.05;
     newY2 = y2 * 0.95 + y1 * 0.05;
 
@@ -411,7 +400,19 @@ function PracticeConnectFour(/* props */) {
   useEffect(() => {
     drawBoard(gameCanvas.current.parentNode);
 
-    let busy, board;
+    currentX = 0;
+    currentY = 0;
+
+    let busy,
+      board,
+      newIndex,
+      newMove,
+      moves,
+      margin,
+      gainX,
+      gainY,
+      nextX,
+      nextY;
 
     let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     rect.setAttribute("y", 6);
@@ -430,16 +431,33 @@ function PracticeConnectFour(/* props */) {
           gameCanvas.current,
           35 - board[index].filter((tile) => tile).length * 7 + index,
         );
-        await refocusGameTree(treeCanvas.current, board, index);
         board[index][board[index].filter((tile) => tile).length] = "y";
 
+        newIndex = index;
+        for (let i = 0; i < index; i++) {
+          if (board[i][5]) newIndex--;
+        }
+        moves = 0;
+        for (let i = 0; i < 7; i++) {
+          if (!board[i][5]) moves++;
+        }
+        margin = ((10 - moves) * 278) / (moves + 1);
+        gainX = newIndex * (278 + margin) + 139 + margin - 1390;
+        gainY = 834;
+
         if (checkVictory(board, index)) {
+          await refocusGameTree(treeCanvas.current, gainX, gainY);
           await handleGameOver(gameCanvas.current, "yellow");
           start();
           return;
         }
 
-        expandGameTree(treeCanvas.current, board, "r");
+        nextY = currentY - gainY;
+        nextX = currentX - gainX;
+
+        expandGameTree(treeCanvas.current, board, "r", nextX, nextY);
+
+        await refocusGameTree(treeCanvas.current, gainX, gainY);
 
         let move;
         do {
@@ -449,10 +467,22 @@ function PracticeConnectFour(/* props */) {
           gameCanvas.current,
           35 - board[move].filter((tile) => tile).length * 7 + move,
         );
-        await refocusGameTree(treeCanvas.current, board, move);
         board[move][board[move].filter((tile) => tile).length] = "r";
 
+        newMove = move;
+        for (let i = 0; i < move; i++) {
+          if (board[i][5]) newMove--;
+        }
+        moves = 0;
+        for (let i = 0; i < 7; i++) {
+          if (!board[i][5]) moves++;
+        }
+        margin = ((10 - moves) * 278) / (moves + 1);
+        gainX = newMove * (278 + margin) + 139 + margin - 1390;
+        gainY = 834;
+
         if (checkVictory(board, move)) {
+          await refocusGameTree(treeCanvas.current, gainX, gainY);
           await handleGameOver(gameCanvas.current, "red");
           start();
           return;
@@ -469,12 +499,18 @@ function PracticeConnectFour(/* props */) {
             !board[6][5]
           )
         ) {
+          await refocusGameTree(treeCanvas.current, gainX, gainY);
           await handleGameOver(gameCanvas.current, "draw");
           start();
           return;
         }
 
-        expandGameTree(treeCanvas.current, board, "y");
+        nextY = currentY - gainY;
+        nextX = currentX - gainX;
+
+        expandGameTree(treeCanvas.current, board, "y", nextX, nextY);
+
+        await refocusGameTree(treeCanvas.current, gainX, gainY);
 
         busy = false;
       };
@@ -483,12 +519,27 @@ function PracticeConnectFour(/* props */) {
 
     async function start() {
       gameCanvas.current.innerHTML = "";
+
+      if (currentY) {
+        gainX = currentX / 50;
+        gainY = currentY / 50;
+        let newX = currentX;
+        let newY = currentY;
+        for (let i = 0; i < 50; i++) {
+          newX -= gainX;
+          newY -= gainY;
+          treeCanvas.current.setAttribute(
+            "transform",
+            `translate(${newX}, ${newY})`,
+          );
+          await new Promise((r) => setTimeout(r, 25));
+        }
+      } else treeCanvas.current.setAttribute("transform", "translate(0, 0)");
+
       treeCanvas.current.innerHTML = "";
 
       currentX = 0;
       currentY = 0;
-
-      treeCanvas.current.setAttribute("transform", "translate(0, 0)");
 
       busy = false;
       board = new Array(7);
@@ -496,8 +547,8 @@ function PracticeConnectFour(/* props */) {
         board[i] = new Array();
       }
 
-      drawGameTreeNode(treeCanvas.current, board, currentX + 1390, currentY);
-      expandGameTree(treeCanvas.current, board, "y");
+      drawGameTreeNode(treeCanvas.current, board, 1390, 0);
+      expandGameTree(treeCanvas.current, board, "y", 0, 0);
     }
 
     start();
