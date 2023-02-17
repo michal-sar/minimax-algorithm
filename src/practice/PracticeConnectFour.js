@@ -273,7 +273,7 @@ function expandGameTree(treeCanvas, board, player, nextX, nextY) {
   let children = [];
 
   for (let i = 0; i < 7; i++) {
-    if (board[i].length < 7) {
+    if (board[i].length < 6) {
       const child = board.map((row) => row.slice());
       child[i].push(player);
       children.push(child);
@@ -431,7 +431,6 @@ function PracticeConnectFour(/* props */) {
           gameCanvas.current,
           35 - board[index].filter((tile) => tile).length * 7 + index,
         );
-        board[index][board[index].filter((tile) => tile).length] = "y";
 
         newIndex = index;
         for (let i = 0; i < index; i++) {
@@ -444,6 +443,8 @@ function PracticeConnectFour(/* props */) {
         margin = ((10 - moves) * 278) / (moves + 1);
         gainX = newIndex * (278 + margin) + 139 + margin - 1390;
         gainY = 834;
+
+        board[index][board[index].filter((tile) => tile).length] = "y";
 
         if (checkVictory(board, index)) {
           await refocusGameTree(treeCanvas.current, gainX, gainY);
@@ -467,7 +468,6 @@ function PracticeConnectFour(/* props */) {
           gameCanvas.current,
           35 - board[move].filter((tile) => tile).length * 7 + move,
         );
-        board[move][board[move].filter((tile) => tile).length] = "r";
 
         newMove = move;
         for (let i = 0; i < move; i++) {
@@ -480,6 +480,8 @@ function PracticeConnectFour(/* props */) {
         margin = ((10 - moves) * 278) / (moves + 1);
         gainX = newMove * (278 + margin) + 139 + margin - 1390;
         gainY = 834;
+
+        board[move][board[move].filter((tile) => tile).length] = "r";
 
         if (checkVictory(board, move)) {
           await refocusGameTree(treeCanvas.current, gainX, gainY);
