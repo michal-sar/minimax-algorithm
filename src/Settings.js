@@ -11,13 +11,14 @@ function Settings(props) {
     setAlphaBetaPruning,
     setDepthLimit,
     setDepthLimitValue,
+    practice,
   } = props;
 
   const [top, setTop] = useState(139);
 
   useEffect(() => {
     const handleScroll = () => {
-      setTop(Math.min(139 + window.pageYOffset * 2.784, 1124.54));
+      setTop(139 + window.pageYOffset * 1.71);
     };
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -41,7 +42,14 @@ function Settings(props) {
   };
 
   return (
-    <div className="settings" style={{ top: `${top}px` }}>
+    <div
+      className="settings"
+      style={
+        practice == "Tree"
+          ? { marginBottom: "max(calc(100vh - 358px), 32px)", top: `${top}px` }
+          : { marginBottom: "269px", top: `${top}px` }
+      }
+    >
       <h2>Settings:</h2>
       <div className="settingsGrid">
         <span className="setting">Alpha-beta pruning</span>
@@ -91,6 +99,7 @@ Settings.propTypes = {
   setAlphaBetaPruning: PropTypes.func,
   setDepthLimit: PropTypes.func,
   setDepthLimitValue: PropTypes.func,
+  practice: PropTypes.string,
 };
 
 export default Settings;

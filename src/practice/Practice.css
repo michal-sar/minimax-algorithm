@@ -26,12 +26,6 @@
   width: 377.2px;
 }
 
-.practiceContainer > svg > text {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-}
-
 .lineX {
   animation-duration: 0.25s;
   animation-fill-mode: forwards;
@@ -222,6 +216,7 @@
   border-radius: 4px;
   box-shadow: #ddd 8px 8px 0 -4px, #224 8px 8px;
   margin: 0 28px 8px 0;
+  max-height: 467px;
 }
 
 .gameTree {
@@ -229,5 +224,7 @@
   border: 4px solid #224;
   border-radius: 4px;
   box-shadow: #ddd 8px 8px 0 -4px, #224 8px 8px;
+  flex-basis: 100%;
   margin: 0 8px 8px 0;
+  max-height: 467px;
 }

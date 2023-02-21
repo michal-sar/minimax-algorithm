@@ -58,3 +58,9 @@ main {
   flex-direction: row;
   justify-content: center;
 }
+
+text {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}

@@ -37,6 +37,7 @@ function Environment() {
           setAlphaBetaPruning={setAlphaBetaPruning}
           setDepthLimit={setDepthLimit}
           setDepthLimitValue={setDepthLimitValue}
+          practice={practice}
         />
       </section>
     </main>
