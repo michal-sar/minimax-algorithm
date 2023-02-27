@@ -6,40 +6,17 @@ import PracticeConnectFour from "./PracticeConnectFour";
 import "./Practice.css";
 
 function Practice(props) {
-  const { practice, alphaBetaPruning, depthLimit, depthLimitValue } = props;
+  const { practice } = props;
   switch (practice) {
     case "Tree":
-      return (
-        <PracticeTree
-          alphaBetaPruning={alphaBetaPruning}
-          depthLimit={depthLimit}
-          depthLimitValue={depthLimitValue}
-        />
-      );
+      return <PracticeTree />;
     case "TicTacToe":
-      return (
-        <PracticeTicTacToe
-          alphaBetaPruning={alphaBetaPruning}
-          depthLimit={depthLimit}
-          depthLimitValue={depthLimitValue}
-        />
-      );
+      return <PracticeTicTacToe />;
     case "ConnectFour":
-      return (
-        <PracticeConnectFour
-          alphaBetaPruning={alphaBetaPruning}
-          depthLimit={depthLimit}
-          depthLimitValue={depthLimitValue}
-        />
-      );
+      return <PracticeConnectFour />;
   }
 }
 
-Practice.propTypes = {
-  practice: PropTypes.string,
-  alphaBetaPruning: PropTypes.bool,
-  depthLimit: PropTypes.bool,
-  depthLimitValue: PropTypes.number,
-};
+Practice.propTypes = { practice: PropTypes.string };
 
 export default Practice;

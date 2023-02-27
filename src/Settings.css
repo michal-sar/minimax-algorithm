@@ -9,6 +9,9 @@
   margin-left: 0;
   margin-right: 28px;
   width: 330px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 .settingsGrid {
@@ -25,9 +28,6 @@
   font-size: 1.4rem;
   font-weight: 700;
   white-space: nowrap;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
 }
 
 .toggleSwitchContainer {
@@ -131,8 +131,6 @@ input[type="range"]:disabled {
 }
 
 .depthLimitValue {
-  -moz-user-select: none;
-  -webkit-user-select: none;
   color: #224;
   display: block;
   font-family: "Nunito", sans-serif;
@@ -140,6 +138,5 @@ input[type="range"]:disabled {
   font-weight: 700;
   margin: 0 14px 14px;
   text-align: center;
-  user-select: none;
   white-space: nowrap;
 }

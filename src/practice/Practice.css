@@ -26,6 +26,10 @@
   width: 377.2px;
 }
 
+.game {
+  cursor: pointer;
+}
+
 .lineX {
   animation-duration: 0.25s;
   animation-fill-mode: forwards;
@@ -227,4 +231,72 @@
   flex-basis: 100%;
   margin: 0 8px 8px 0;
   max-height: 467px;
+}
+
+.offlineText,
+.turnIndicator.fadeIn {
+  animation-duration: 0.3125s;
+  animation-fill-mode: forwards;
+  animation-name: fadeIn;
+  animation-timing-function: cubic-bezier(0, 0.7, 1, 1);
+}
+
+.turnIndicator.fadeOut {
+  animation-duration: 0.3125s;
+  animation-fill-mode: forwards;
+  animation-name: fadeOut;
+  animation-timing-function: cubic-bezier(0.7, 0, 1, 1);
+}
+
+.turnIndicator.offline {
+  opacity: 0;
+}
+
+.loadingIndicator.fadeOut {
+  opacity: 0;
+  transition: all 0.2s;
+}
+
+.loadingIndicator.fadeIn {
+  opacity: 1;
+  transition: all 0.2s;
+}
+
+#indicatorElement1 {
+  animation: changeOpacity 1s infinite;
+}
+
+#indicatorElement2 {
+  animation: changeOpacity 1s infinite;
+  animation-delay: 0.2s;
+}
+
+#indicatorElement3 {
+  animation: changeOpacity 1s infinite;
+  animation-delay: 0.4s;
+}
+
+#indicatorElement4 {
+  animation: changeOpacity 1s infinite;
+  animation-delay: 0.6s;
+}
+
+.offline > #indicatorElement1,
+.offline > #indicatorElement2,
+.offline > #indicatorElement3,
+.offline > #indicatorElement4 {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes changeOpacity {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useRef, useContext, useState } from "react";
+import { EnvironmentContext } from "../Environment";
 
 const GameCanvas = React.forwardRef((props, ref) => {
   return (
@@ -11,13 +11,73 @@ const GameCanvas = React.forwardRef((props, ref) => {
 GameCanvas.displayName = "GameCanvas";
 
 const TreeCanvas = React.forwardRef((props, ref) => {
-  return (
-    <svg className="gameTree" viewBox="0 0 1260 504">
-      <g ref={ref}></g>
-    </svg>
-  );
+  return <g ref={ref} />;
 });
 TreeCanvas.displayName = "TreeCanvas";
+
+const TurnIndicator = React.forwardRef((props, ref) => {
+  return (
+    <text
+      className="turnIndicator"
+      fontSize={23.625 * 1.75} // <- ...
+      textAnchor="middle"
+      dominantBaseline="middle"
+      fontFamily="Nunito, sans-serif"
+      fontWeight="900"
+      x="630"
+      y={-50.4 - 6.3 - 6.3 - 6.3} // <- ...
+      paintOrder="stroke"
+      stroke="#224"
+      strokeWidth={6 * 1.75} // <- ...
+      ref={ref}
+    ></text>
+  );
+});
+TurnIndicator.displayName = "TurnIndicator";
+
+const LoadingIndicator = React.forwardRef((props, ref) => {
+  return (
+    <g className="loadingIndicator" ref={ref}>
+      <circle
+        id="indicatorElement1"
+        cx="535.5"
+        cy={-25.2 - 2.52} // <- ...
+        r="8"
+        fill="#fff"
+        stroke="#224"
+        strokeWidth="5"
+      ></circle>
+      <circle
+        id="indicatorElement2"
+        cx="598.5"
+        cy={-25.2 - 2.52} // <- ...
+        r="8"
+        fill="#fff"
+        stroke="#224"
+        strokeWidth="5"
+      ></circle>
+      <circle
+        id="indicatorElement3"
+        cx="661.5"
+        cy={-25.2 - 2.52} // <- ...
+        r="8"
+        fill="#fff"
+        stroke="#224"
+        strokeWidth="5"
+      ></circle>
+      <circle
+        id="indicatorElement4"
+        cx="724.5"
+        cy={-25.2 - 2.52} // <- ...
+        r="8"
+        fill="#fff"
+        stroke="#224"
+        strokeWidth="5"
+      ></circle>
+    </g>
+  );
+});
+LoadingIndicator.displayName = "LoadingIndicator";
 
 function drawBoard(gameCanvas) {
   let g = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -57,9 +117,9 @@ function drawBoard(gameCanvas) {
   gameCanvas.appendChild(g);
 }
 
-async function drawX(gameCanvas, index) {
-  let col = index % 3;
-  let row = Math.floor(index / 3);
+async function drawX(gameCanvas, index, practiceAbortController) {
+  const col = index % 3;
+  const row = Math.floor(index / 3);
 
   let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
   line.classList = "lineX";
@@ -78,6 +138,8 @@ async function drawX(gameCanvas, index) {
   gameCanvas.appendChild(line);
   await new Promise((r) => setTimeout(r, 250));
 
+  if (practiceAbortController.signal.aborted) return;
+
   line = line.cloneNode(false);
   line.setAttribute("x1", col * 43 + 31.5);
   line.setAttribute("x2", col * 43 + 8.5);
@@ -93,8 +155,8 @@ async function drawX(gameCanvas, index) {
 }
 
 async function drawO(gameCanvas, index) {
-  let col = index % 3;
-  let row = Math.floor(index / 3);
+  const col = index % 3;
+  const row = Math.floor(index / 3);
 
   let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
   path.classList = "pathO";
@@ -117,10 +179,10 @@ async function drawO(gameCanvas, index) {
   await new Promise((r) => setTimeout(r, 500));
 }
 
-async function handleGameOver(gameCanvas, result) {
-  let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+async function handleGameOver(gameCanvas, result, practiceAbortController) {
+  const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
   text.classList = "resultText";
-  text.setAttribute("font-size", "23.625");
+  text.setAttribute("font-size", 23.625);
   text.setAttribute("text-anchor", "middle");
   text.setAttribute("dominant-baseline", "middle");
   text.setAttribute("font-family", "Nunito, sans-serif");
@@ -150,8 +212,10 @@ async function handleGameOver(gameCanvas, result) {
   }
 
   await new Promise((r) => setTimeout(r, 2000));
+  if (practiceAbortController.signal.aborted) return;
   gameCanvas.parentNode.classList = "gameReset";
   await new Promise((r) => setTimeout(r, 1000));
+  if (practiceAbortController.signal.aborted) return;
   gameCanvas.parentNode.classList = "game";
 
   gameCanvas.parentNode.removeChild(text);
@@ -208,8 +272,8 @@ function drawGameTreeNode(treeCanvas, board, x, y) {
 
   for (let i = 0; i < 9; i++) {
     if (board[i]) {
-      let col = i % 3;
-      let row = Math.floor(i / 3);
+      const col = i % 3;
+      const row = Math.floor(i / 3);
       if (board[i] == "x") {
         line = line.cloneNode(false);
         line.setAttribute("x1", x + col * 43 - 54.5);
@@ -255,17 +319,22 @@ function drawGameTreeNode(treeCanvas, board, x, y) {
   }
 }
 
-async function refocusGameTree(treeCanvas, gainX, gainY) {
+async function refocusGameTree(
+  treeCanvas,
+  currentX,
+  currentY,
+  gainX,
+  gainY,
+  practiceAbortController,
+) {
   let newX = currentX;
   let newY = currentY;
-
-  currentY -= gainY;
-  currentX -= gainX;
 
   gainX /= 25;
   gainY /= 25;
 
   for (let i = 0; i < 25; i++) {
+    if (practiceAbortController.signal.aborted) return;
     newX -= gainX;
     newY -= gainY;
     treeCanvas.setAttribute("transform", `translate(${newX}, ${newY})`);
@@ -285,10 +354,9 @@ function expandGameTree(treeCanvas, board, nextX, nextY) {
     return result;
   }, []);
 
-  let x1 = -nextX + 630;
-  let y1 = -nextY + 126;
-  let x2, y2, newX1, newX2, newY1, newY2;
-  let margin = ((10 - children.length) * 126) / (children.length + 1);
+  const x1 = -nextX + 630;
+  const y1 = -nextY + 126;
+  const margin = ((10 - children.length) * 126) / (children.length + 1);
 
   let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
   line.setAttribute("stroke-linecap", "round");
@@ -309,16 +377,17 @@ function expandGameTree(treeCanvas, board, nextX, nextY) {
   text.setAttribute("dominant-baseline", "central");
   text.setAttribute("font-family", "Nunito, sans-serif");
   text.setAttribute("font-weight", "900");
+  text.classList = "evaluationNode";
 
   for (let i = 0; i < children.length; i++) {
-    x2 = -nextX + i * (126 + margin) + 63 + margin;
-    y2 = -nextY + 378;
+    const x2 = -nextX + i * (126 + margin) + 63 + margin;
+    const y2 = -nextY + 378;
 
-    newX1 = x1 * 0.85 + x2 * 0.15;
-    newY1 =
+    const newX1 = x1 * 0.85 + x2 * 0.15;
+    const newY1 =
       y1 * 0.9 + y2 * 0.1 - Math.pow(Math.abs(newX1 + (nextX - 630)), 2) / 630;
-    newX2 = x2 * 0.95 + x1 * 0.05;
-    newY2 = y2 * 0.95 + y1 * 0.05;
+    const newX2 = x2 * 0.95 + x1 * 0.05;
+    const newY2 = y2 * 0.95 + y1 * 0.05;
 
     const angle = (Math.atan2(newY2 - newY1, newX2 - newX1) * 180) / Math.PI;
 
@@ -387,36 +456,137 @@ function expandGameTree(treeCanvas, board, nextX, nextY) {
     text = text.cloneNode(false);
     text.setAttribute("x", x2 * 0.5 + newX1 * 0.5);
     text.setAttribute("y", y2 * 0.5 + newY1 * 0.5);
-    text.textContent = (Math.floor(Math.random() * 21) - 10) / 10;
+    text.textContent = "...";
     treeCanvas.appendChild(text);
 
     drawGameTreeNode(treeCanvas, children[i], x2, y2);
   }
 }
 
-var currentX, currentY;
-
-function PracticeTicTacToe(/* props */) {
+function PracticeTicTacToe() {
   const gameCanvas = useRef(null);
   const treeCanvas = useRef(null);
-  // const { alphaBetaPruning, depthLimit, depthLimitValue } = props;
+  const turnIndicator = useRef(null);
+  const loadingIndicator = useRef(null);
 
-  useEffect(() => {
-    drawBoard(gameCanvas.current.parentNode);
+  const board = useRef(new Array(9).fill(null));
+  let settingsAbortController = useRef(null);
+  let busy = useRef(null);
+  let currentX = 0;
+  let currentY = 0;
+
+  const { alphaBetaPruning, depthLimit, depthLimitValue } =
+    useContext(EnvironmentContext);
+  const alphaBetaPruningRef = useRef(alphaBetaPruning);
+  const depthLimitRef = useRef(depthLimit);
+  const depthLimitValueRef = useRef(depthLimitValue);
+
+  const [status, setStatus] = useState("loading");
+  const statusRef = useRef(status);
+
+  async function getEvaluations() {
+    if (statusRef.current == "loading") {
+      return;
+    }
+
+    if (statusRef.current == "offline") {
+      let evaluations = [];
+      for (let i = 0; i < 9; i++) {
+        if (!board.current[i]) {
+          evaluations.push(Math.floor(Math.random() * 3 - 1));
+        }
+      }
+      getEvaluationsPromiseResolve(evaluations);
+      return;
+    }
+
+    settingsAbortController.current?.abort();
+    settingsAbortController.current = new AbortController();
+    const signal = settingsAbortController.current.signal;
+    let state = "";
+    for (let i = 0; i < 9; i++) {
+      if (board.current[i]) {
+        state += board.current[i];
+      } else state += "_";
+    }
+    const evaluationNodes = document.getElementsByClassName("evaluationNode");
+    // console.log(
+    //   `http://127.0.0.1:8000/tic_tac_toe/${state}?alpha_beta_pruning=${alphaBetaPruningRef.current}&depth_limit=${depthLimitRef.current}&depth_limit_value=${depthLimitValueRef.current}`,
+    // );
+    await fetch(
+      `http://127.0.0.1:8000/tic_tac_toe/${state}?alpha_beta_pruning=${alphaBetaPruningRef.current}&depth_limit=${depthLimitRef.current}&depth_limit_value=${depthLimitValueRef.current}`,
+      { signal },
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        const evaluations = data.evaluations;
+        let i = evaluationNodes.length;
+        let j = 1;
+        while (evaluations.length - j >= 0) {
+          i--;
+          evaluationNodes[i].textContent = evaluations[evaluations.length - j];
+          j++;
+        }
+        loadingIndicator.current.classList.remove("fadeIn");
+        loadingIndicator.current.classList.add("fadeOut");
+        getEvaluationsPromiseResolve(evaluations);
+      })
+      .catch((error) => {
+        if (error.name != "AbortError") {
+          console.error(error.name);
+          console.error(error);
+        }
+      });
+  }
+
+  async function startGame() {
+    gameCanvas.current.innerHTML = "";
+
+    if (currentY) {
+      const lossX = currentX / 50;
+      const lossY = currentY / 50;
+      let newX = currentX;
+      let newY = currentY;
+      for (let i = 0; i < 50; i++) {
+        newX -= lossX;
+        newY -= lossY;
+        treeCanvas.current.setAttribute(
+          "transform",
+          `translate(${newX}, ${newY})`,
+        );
+        await new Promise((r) => setTimeout(r, 25));
+      }
+    } else treeCanvas.current.setAttribute("transform", "translate(0, 0)");
+
+    treeCanvas.current.innerHTML = "";
 
     currentX = 0;
     currentY = 0;
 
-    let busy,
-      board,
-      newIndex,
-      newMove,
-      moves,
-      margin,
-      gainX,
-      gainY,
-      nextX,
-      nextY;
+    busy.current = false;
+    board.current = new Array(9);
+    for (let i = 0; i < board.current.length; i++) {
+      board.current[i] = null;
+    }
+
+    turnIndicator.current.classList.remove("fadeOut");
+    turnIndicator.current.classList.add("fadeIn");
+    turnIndicator.current.setAttribute("fill", "#f97");
+    turnIndicator.current.textContent = "Maximizer's turn";
+
+    drawGameTreeNode(treeCanvas.current, board.current, 630, 0);
+    expandGameTree(treeCanvas.current, board.current, 0, 0);
+    loadingIndicator.current.classList.remove("fadeOut");
+    loadingIndicator.current.classList.add("fadeIn");
+    getEvaluations();
+  }
+
+  useEffect(() => {
+    const practiceAbortController = new AbortController();
+
+    drawBoard(gameCanvas.current.parentNode);
+
+    let moves, margin, gainX, turnInterval;
 
     let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     rect.setAttribute("width", 40);
@@ -424,116 +594,280 @@ function PracticeTicTacToe(/* props */) {
     rect.setAttribute("fill-opacity", 0);
 
     for (let index = 0; index < 9; index++) {
-      let col = index % 3;
-      let row = Math.floor(index / 3);
+      const col = index % 3;
+      const row = Math.floor(index / 3);
 
       rect = rect.cloneNode(false);
       rect.setAttribute("x", col * 43);
       rect.setAttribute("y", row * 43);
       rect.onclick = async () => {
-        if (busy || board[index]) return;
-        busy = true;
+        if (busy.current || board.current[index]) return;
+        busy.current = true;
 
-        drawX(gameCanvas.current, index);
-        board[index] = "x";
+        drawX(gameCanvas.current, index, practiceAbortController);
+        board.current[index] = "x";
 
-        newIndex =
-          index - board.slice(0, index).filter((tile) => tile != null).length;
-        moves = board.filter((tile) => tile == null).length + 1;
+        const newIndex =
+          index -
+          board.current.slice(0, index).filter((tile) => tile != null).length;
+        moves = board.current.filter((tile) => tile == null).length + 1;
         margin = ((10 - moves) * 126) / (moves + 1);
         gainX = newIndex * (126 + margin) + 63 + margin - 630;
-        gainY = 378;
 
-        if (checkVictory(board)) {
-          await refocusGameTree(treeCanvas.current, gainX, gainY);
-          await handleGameOver(gameCanvas.current, "x");
-          start();
+        if (checkVictory(board.current)) {
+          await refocusGameTree(
+            treeCanvas.current,
+            currentX,
+            currentY,
+            gainX,
+            378,
+            practiceAbortController,
+          );
+          currentX -= gainX;
+          currentY -= 378;
+          await handleGameOver(
+            gameCanvas.current,
+            "x",
+            practiceAbortController,
+          );
+          if (!practiceAbortController.signal.aborted) {
+            startGame();
+            turnIndicator.current.classList.remove("fadeIn");
+            turnIndicator.current.classList.add("fadeOut");
+          }
           return;
         }
 
-        if (!board.some((tile) => tile == null)) {
-          await refocusGameTree(treeCanvas.current, gainX, gainY);
-          await handleGameOver(gameCanvas.current, "draw");
-          start();
+        if (!board.current.some((tile) => tile == null)) {
+          await refocusGameTree(
+            treeCanvas.current,
+            currentX,
+            currentY,
+            gainX,
+            378,
+            practiceAbortController,
+          );
+          currentX -= gainX;
+          currentY -= 378;
+          await handleGameOver(
+            gameCanvas.current,
+            "draw",
+            practiceAbortController,
+          );
+          if (!practiceAbortController.signal.aborted) {
+            startGame();
+            turnIndicator.current.classList.remove("fadeIn");
+            turnIndicator.current.classList.add("fadeOut");
+          }
           return;
         }
 
-        nextY = currentY - gainY;
-        nextX = currentX - gainX;
+        if (practiceAbortController.signal.aborted) return;
+        expandGameTree(
+          treeCanvas.current,
+          board.current,
+          currentX - gainX,
+          currentY - 378,
+        );
 
-        expandGameTree(treeCanvas.current, board, nextX, nextY);
+        getEvaluationsPromise = new Promise((resolve) => {
+          getEvaluationsPromiseResolve = resolve;
+        });
+        loadingIndicator.current.classList.remove("fadeOut");
+        loadingIndicator.current.classList.add("fadeIn");
+        getEvaluations();
 
-        await refocusGameTree(treeCanvas.current, gainX, gainY);
+        turnIndicator.current.classList.remove("fadeIn");
+        turnIndicator.current.classList.add("fadeOut");
+        turnInterval = setInterval(() => {
+          if (!practiceAbortController.signal.aborted) {
+            turnIndicator.current.classList.remove("fadeOut");
+            turnIndicator.current.classList.add("fadeIn");
+            turnIndicator.current.textContent = "Minimizer's turn";
+            turnIndicator.current.setAttribute("fill", "#7df");
+            clearInterval(turnInterval);
+          }
+        }, 312.5);
 
-        let move;
+        await refocusGameTree(
+          treeCanvas.current,
+          currentX,
+          currentY,
+          gainX,
+          378,
+          practiceAbortController,
+        );
+        currentX -= gainX;
+        currentY -= 378;
+
+        if (practiceAbortController.signal.aborted) return;
+        loadingIndicator.current.classList.remove("fadeOut");
+        loadingIndicator.current.classList.add("fadeIn");
+        const evaluations = await getEvaluationsPromise;
+        const newMove = evaluations.indexOf(Math.min(...evaluations));
+        let move = -1;
+        let skipMoves = newMove;
         do {
-          move = Math.floor(Math.random() * 9);
-        } while (board[move]);
-        drawO(gameCanvas.current, move);
-        board[move] = "o";
+          move++;
+          if (!board.current[move]) skipMoves--;
+        } while (skipMoves >= 0);
 
-        newMove =
-          move - board.slice(0, move).filter((tile) => tile != null).length;
-        moves = board.filter((tile) => tile == null).length + 1;
+        if (practiceAbortController.signal.aborted) return;
+        drawO(gameCanvas.current, move);
+        board.current[move] = "o";
+
+        moves = board.current.filter((tile) => tile == null).length + 1;
         margin = ((10 - moves) * 126) / (moves + 1);
         gainX = newMove * (126 + margin) + 63 + margin - 630;
-        gainY = 378;
 
-        if (checkVictory(board)) {
-          await refocusGameTree(treeCanvas.current, gainX, gainY);
-          await handleGameOver(gameCanvas.current, "o");
-          start();
+        if (checkVictory(board.current)) {
+          await refocusGameTree(
+            treeCanvas.current,
+            currentX,
+            currentY,
+            gainX,
+            378,
+            practiceAbortController,
+          );
+          currentX -= gainX;
+          currentY -= 378;
+          await handleGameOver(
+            gameCanvas.current,
+            "o",
+            practiceAbortController,
+          );
+          if (!practiceAbortController.signal.aborted) {
+            startGame();
+            turnIndicator.current.classList.remove("fadeIn");
+            turnIndicator.current.classList.add("fadeOut");
+          }
           return;
         }
 
-        nextY = currentY - gainY;
-        nextX = currentX - gainX;
+        if (practiceAbortController.signal.aborted) return;
+        expandGameTree(
+          treeCanvas.current,
+          board.current,
+          currentX - gainX,
+          currentY - 378,
+        );
+        loadingIndicator.current.classList.remove("fadeOut");
+        loadingIndicator.current.classList.add("fadeIn");
+        getEvaluations();
 
-        expandGameTree(treeCanvas.current, board, nextX, nextY);
+        turnIndicator.current.classList.remove("fadeIn");
+        turnIndicator.current.classList.add("fadeOut");
+        turnInterval = setInterval(() => {
+          if (!practiceAbortController.signal.aborted) {
+            turnIndicator.current.classList.remove("fadeOut");
+            turnIndicator.current.classList.add("fadeIn");
+            turnIndicator.current.textContent = "Maximizer's turn";
+            turnIndicator.current.setAttribute("fill", "#f97");
+            clearInterval(turnInterval);
+          }
+        }, 312.5);
 
-        await refocusGameTree(treeCanvas.current, gainX, gainY);
+        await refocusGameTree(
+          treeCanvas.current,
+          currentX,
+          currentY,
+          gainX,
+          378,
+          practiceAbortController,
+        );
+        currentX -= gainX;
+        currentY -= 378;
 
-        busy = false;
+        busy.current = false;
       };
       gameCanvas.current.parentNode.appendChild(rect);
     }
 
-    async function start() {
-      gameCanvas.current.innerHTML = "";
+    drawGameTreeNode(treeCanvas.current, board.current, 630, 0);
+    expandGameTree(treeCanvas.current, board.current, 0, 0);
+    getStatus();
 
-      if (currentY) {
-        gainX = currentX / 50;
-        gainY = currentY / 50;
-        let newX = currentX;
-        let newY = currentY;
-        for (let i = 0; i < 50; i++) {
-          newX -= gainX;
-          newY -= gainY;
-          treeCanvas.current.setAttribute(
-            "transform",
-            `translate(${newX}, ${newY})`,
-          );
-          await new Promise((r) => setTimeout(r, 25));
-        }
-      } else treeCanvas.current.setAttribute("transform", "translate(0, 0)");
-
-      treeCanvas.current.innerHTML = "";
-
-      currentX = 0;
-      currentY = 0;
-
-      busy = false;
-      board = new Array(9);
-      for (let i = 0; i < board.length; i++) {
-        board[i] = null;
-      }
-
-      drawGameTreeNode(treeCanvas.current, board, 630, 0);
-      expandGameTree(treeCanvas.current, board, 0, 0);
+    async function getStatus() {
+      busy.current = true;
+      const signal = practiceAbortController.signal;
+      await fetch("http://127.0.0.1:8000/status", { signal })
+        .then((response) => response.json())
+        .then((data) => {
+          setStatus(data.status);
+        })
+        .catch((error) => {
+          if (error.name != "AbortError") {
+            setStatus("offline");
+          }
+        });
     }
 
-    start();
+    return () => {
+      practiceAbortController?.abort();
+      settingsAbortController.current?.abort();
+    };
   }, []);
+
+  useEffect(() => {
+    alphaBetaPruningRef.current = alphaBetaPruning;
+    depthLimitRef.current = depthLimit;
+    depthLimitValueRef.current = depthLimitValue;
+    if (statusRef.current != "loading") {
+      loadingIndicator.current.classList.remove("fadeOut");
+      loadingIndicator.current.classList.add("fadeIn");
+      getEvaluations();
+    }
+  }, [alphaBetaPruning, depthLimit, depthLimitValue]);
+
+  useEffect(() => {
+    statusRef.current = status;
+    if (status == "offline") {
+      turnIndicator.current.classList.add("offline");
+      loadingIndicator.current.classList.add("offline");
+
+      let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.classList = "offlineText";
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("dominant-baseline", "middle");
+      text.setAttribute("font-family", "Nunito, sans-serif");
+      text.setAttribute("font-weight", "900");
+      text.setAttribute("x", 630);
+      text.setAttribute("paint-order", "stroke");
+      text.setAttribute("stroke", "#224");
+      text.setAttribute("fill", "#fff");
+
+      text.setAttribute("font-size", 23.625 * 1.75);
+      text.setAttribute("y", -50.4 - 6.3 - 6.3 - 6.3);
+      text.setAttribute("stroke-width", 6 * 1.75);
+      text.textContent = "MiniMax API is offline...";
+      treeCanvas.current.parentNode.appendChild(text);
+
+      text = text.cloneNode(false);
+      text.setAttribute("font-size", 23.625 * 1);
+      text.setAttribute("y", -25.2 - 2.1);
+      text.setAttribute("stroke-width", 6 * 1);
+      treeCanvas.current.parentNode.appendChild(text);
+
+      let tspan = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "tspan",
+      );
+      tspan.textContent = "The ";
+      tspan.setAttribute("fill", "#fff");
+      text.appendChild(tspan);
+
+      tspan = tspan.cloneNode(false);
+      tspan.textContent = "minimizer ";
+      tspan.setAttribute("fill", "#7df");
+      text.appendChild(tspan);
+
+      tspan = tspan.cloneNode(false);
+      tspan.textContent = "will make random moves";
+      tspan.setAttribute("fill", "#fff");
+      text.appendChild(tspan);
+    }
+    if (status != "loading") startGame();
+  }, [status]);
 
   return (
     <div className="gameContainer">
@@ -541,15 +875,18 @@ function PracticeTicTacToe(/* props */) {
         <h3 className="practiceTitle">Tic-tac-toe</h3>
         <GameCanvas ref={gameCanvas} />
       </div>
-      <TreeCanvas ref={treeCanvas} />
+      <svg className="gameTree" viewBox="0 -50.4 1260 504">
+        <TreeCanvas ref={treeCanvas} />
+        <TurnIndicator ref={turnIndicator} />
+        <LoadingIndicator ref={loadingIndicator} />
+      </svg>
     </div>
   );
 }
 
-PracticeTicTacToe.propTypes = {
-  alphaBetaPruning: PropTypes.bool,
-  depthLimit: PropTypes.bool,
-  depthLimitValue: PropTypes.number,
-};
+let getEvaluationsPromiseResolve;
+let getEvaluationsPromise = new Promise((resolve) => {
+  getEvaluationsPromiseResolve = resolve;
+});
 
 export default PracticeTicTacToe;

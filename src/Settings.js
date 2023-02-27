@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import "./Settings.css";
+import { EnvironmentContext } from "./Environment";
 
 const root = document.querySelector(":root");
 
 function Settings(props) {
+  const { practice } = props;
   const {
     depthLimit,
     depthLimitValue,
     setAlphaBetaPruning,
     setDepthLimit,
     setDepthLimitValue,
-    practice,
-  } = props;
+  } = useContext(EnvironmentContext);
 
   const [top, setTop] = useState(139);
 
@@ -93,13 +94,6 @@ function Settings(props) {
   );
 }
 
-Settings.propTypes = {
-  depthLimit: PropTypes.bool,
-  depthLimitValue: PropTypes.number,
-  setAlphaBetaPruning: PropTypes.func,
-  setDepthLimit: PropTypes.func,
-  setDepthLimitValue: PropTypes.func,
-  practice: PropTypes.string,
-};
+Settings.propTypes = { practice: PropTypes.string };
 
 export default Settings;

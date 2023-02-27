@@ -32,6 +32,9 @@ footer {
   padding: 10px 0;
   text-align: center;
   width: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 a {

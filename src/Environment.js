@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { createContext, useState } from "react";
 import { PracticeButtons, TheoryButtons } from "./Buttons";
 import Theory from "./theory/Theory";
 import Practice from "./practice/Practice";
 import Settings from "./Settings";
 import "./Environment.css";
+
+export const EnvironmentContext = createContext();
 
 function Environment() {
   const [theory, setTheory] = useState("MiniMaxAlgorithm");
@@ -23,22 +25,24 @@ function Environment() {
           and alpha-beta pruning:
         </h3>
         <PracticeButtons practice={practice} setPractice={setPractice} />
-        <Practice
-          practice={practice}
-          alphaBetaPruning={alphaBetaPruning}
-          depthLimit={depthLimit}
-          depthLimitValue={depthLimitValue}
-        />
+        <EnvironmentContext.Provider
+          value={{ alphaBetaPruning, depthLimit, depthLimitValue }}
+        >
+          <Practice practice={practice} />
+        </EnvironmentContext.Provider>
       </section>
       <section>
-        <Settings
-          depthLimit={depthLimit}
-          depthLimitValue={depthLimitValue}
-          setAlphaBetaPruning={setAlphaBetaPruning}
-          setDepthLimit={setDepthLimit}
-          setDepthLimitValue={setDepthLimitValue}
-          practice={practice}
-        />
+        <EnvironmentContext.Provider
+          value={{
+            depthLimit,
+            depthLimitValue,
+            setAlphaBetaPruning,
+            setDepthLimit,
+            setDepthLimitValue,
+          }}
+        >
+          <Settings practice={practice} />
+        </EnvironmentContext.Provider>
       </section>
     </main>
   );

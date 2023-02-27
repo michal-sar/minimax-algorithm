@@ -86,7 +86,7 @@ class Tree {
     }
   }
   draw(canvas) {
-    let margin = 195.5 - this.root.width * 24;
+    const margin = 195.5 - this.root.width * 24;
 
     let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line.setAttribute("stroke", "#224");
@@ -185,7 +185,7 @@ function generateTree(pruferSequence) {
     }
   }
 
-  let occurrences = new Map();
+  const occurrences = new Map();
   for (let i = 0; i < edges.length; i++) {
     occurrences.set(
       pruferSequence[i],
@@ -193,11 +193,11 @@ function generateTree(pruferSequence) {
     );
   }
 
-  let rootId = [...occurrences.entries()].reduce((accumulator, value) =>
+  const rootId = [...occurrences.entries()].reduce((accumulator, value) =>
     accumulator[1] < value[1] ? value : accumulator,
   )[0];
 
-  let tree = new Tree(rootId);
+  const tree = new Tree(rootId);
 
   let potentialParentNodeIds = [rootId];
   while (edges.length) {
@@ -228,22 +228,25 @@ function generateTree(pruferSequence) {
 
 function PracticeTree(props) {
   const canvas = useRef(null);
+  const pruferSequence = useRef(new Array(10)); // n + 2 <- Change the number of nodes here!
   const { alphaBetaPruning, depthLimit, depthLimitValue } = props;
 
   useEffect(() => {
     canvas.current.innerHTML = "";
 
-    for (let i = 0; i < pruferSequence.length; i++)
-      pruferSequence[i] = Math.ceil(Math.random() * pruferSequence.length);
+    for (let i = 0; i < pruferSequence.current.length; i++)
+      pruferSequence.current[i] = Math.ceil(
+        Math.random() * pruferSequence.current.length,
+      );
 
-    let tree = generateTree(pruferSequence);
+    const tree = generateTree(pruferSequence.current);
     tree.draw(canvas.current);
   }, []);
 
   useEffect(() => {
     canvas.current.innerHTML = "";
 
-    let tree = generateTree(pruferSequence);
+    const tree = generateTree(pruferSequence.current);
     tree.draw(canvas.current);
   }, [alphaBetaPruning, depthLimit, depthLimitValue]);
 
@@ -263,7 +266,5 @@ PracticeTree.propTypes = {
   depthLimit: PropTypes.bool,
   depthLimitValue: PropTypes.number,
 };
-
-let pruferSequence = new Array(10); // n + 2 <- Change the number of nodes here!
 
 export default PracticeTree;
