@@ -48,7 +48,7 @@ function TheoryMiniMaxAlgorithm() {
         <div>
           <DepthFirst />
           <p className="imageDescription">
-            <b>Image 2:</b> <u>Depth-first traversal</u> of{" "}
+            <b>Image 2:</b> <u>Depth-first traversal</u> of a{" "}
             <u>partial game tree</u> representing tic-tac-toe.
           </p>
         </div>
