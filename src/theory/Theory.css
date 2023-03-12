@@ -2,7 +2,7 @@
   background: #fff;
   border: 4px solid #224;
   border-radius: 4px;
-  height: 700px; /* ... Images -> last line */
+  height: 864px;
   margin: 0 20px;
 }
 
@@ -12,6 +12,55 @@ p {
   font-size: 1.1rem;
   margin: 10px 33px 10px 10px;
   line-height: 1.45;
+}
+
+.outlineGreen,
+.outlineRed,
+.outlineYellow,
+.outlineBlue {
+  border-radius: 4px;
+  outline-offset: -2px;
+  outline-style: dashed;
+  outline-width: 2px;
+  padding: 0px 4px;
+}
+
+.outlineBlue {
+  outline-color: #77f;
+}
+
+.outlineGreen {
+  outline-color: #7f7;
+}
+
+.outlineRed {
+  outline-color: #f77;
+}
+
+.outlineYellow {
+  outline-color: #fd7;
+}
+
+.imageContainer {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 10px 56px 33px 33px;
+  orientation: horizontal;
+}
+
+.imageContainer > div {
+  width: 45%;
+}
+
+.imageContainer > div > svg {
+  width: 100%;
+}
+
+.imageDescription {
+  font-size: 1rem;
+  margin: 4px 0 0;
+  text-align: center;
 }
 
 .monospaced {
