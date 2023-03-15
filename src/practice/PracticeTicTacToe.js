@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useContext, useState } from "react";
+import React, { useEffect, useRef, useContext, useMemo } from "react";
 import { EnvironmentContext } from "../Environment";
+import PropTypes from "prop-types";
 
-const GameCanvas = React.forwardRef((props, ref) => {
+const GameCanvas = React.forwardRef((_, ref) => {
   return (
     <svg className="game" viewBox="0 0 126 126">
       <g ref={ref} />
@@ -10,38 +11,38 @@ const GameCanvas = React.forwardRef((props, ref) => {
 });
 GameCanvas.displayName = "GameCanvas";
 
-const TreeCanvas = React.forwardRef((props, ref) => {
+const TreeCanvas = React.forwardRef((_, ref) => {
   return <g ref={ref} />;
 });
 TreeCanvas.displayName = "TreeCanvas";
 
-const TurnIndicator = React.forwardRef((props, ref) => {
+const TurnIndicator = React.forwardRef((_, ref) => {
   return (
     <text
       className="turnIndicator"
-      fontSize={23.625 * 1.75} // <- ...
+      fontSize={41.34375}
       textAnchor="middle"
       dominantBaseline="middle"
       fontFamily="Nunito, sans-serif"
       fontWeight="900"
       x="630"
-      y={-50.4 - 6.3 - 6.3 - 6.3} // <- ...
+      y={-69.3}
       paintOrder="stroke"
       stroke="#224"
-      strokeWidth={6 * 1.75} // <- ...
+      strokeWidth={10.5}
       ref={ref}
     ></text>
   );
 });
 TurnIndicator.displayName = "TurnIndicator";
 
-const LoadingIndicator = React.forwardRef((props, ref) => {
+const LoadingIndicator = React.forwardRef((_, ref) => {
   return (
     <g className="loadingIndicator" ref={ref}>
       <circle
         id="indicatorElement1"
         cx="535.5"
-        cy={-25.2 - 2.52} // <- ...
+        cy={-27.72}
         r="8"
         fill="#fff"
         stroke="#224"
@@ -50,7 +51,7 @@ const LoadingIndicator = React.forwardRef((props, ref) => {
       <circle
         id="indicatorElement2"
         cx="598.5"
-        cy={-25.2 - 2.52} // <- ...
+        cy={-27.72}
         r="8"
         fill="#fff"
         stroke="#224"
@@ -59,7 +60,7 @@ const LoadingIndicator = React.forwardRef((props, ref) => {
       <circle
         id="indicatorElement3"
         cx="661.5"
-        cy={-25.2 - 2.52} // <- ...
+        cy={-27.72}
         r="8"
         fill="#fff"
         stroke="#224"
@@ -68,7 +69,7 @@ const LoadingIndicator = React.forwardRef((props, ref) => {
       <circle
         id="indicatorElement4"
         cx="724.5"
-        cy={-25.2 - 2.52} // <- ...
+        cy={-27.72}
         r="8"
         fill="#fff"
         stroke="#224"
@@ -241,7 +242,7 @@ function drawGameTreeNode(treeCanvas, board, x, y) {
   line.setAttribute("y1", y + 3);
   line.setAttribute("y2", y + 123);
   line.setAttribute("stroke", "#224");
-  line.setAttribute("stroke-width", 3 * 1.2);
+  line.setAttribute("stroke-width", 3.6);
   line.setAttribute("stroke-linecap", "round");
   treeCanvas.appendChild(line);
 
@@ -281,7 +282,7 @@ function drawGameTreeNode(treeCanvas, board, x, y) {
         line.setAttribute("y1", y + row * 43 + 8.5);
         line.setAttribute("y2", y + row * 43 + 31.5);
         line.setAttribute("stroke", "#224");
-        line.setAttribute("stroke-width", 9 * 1.2);
+        line.setAttribute("stroke-width", 10.8);
         treeCanvas.appendChild(line);
 
         line = line.cloneNode(false);
@@ -291,7 +292,7 @@ function drawGameTreeNode(treeCanvas, board, x, y) {
 
         line = line.cloneNode(false);
         line.setAttribute("stroke", "#f97");
-        line.setAttribute("stroke-width", 3 * 1.2);
+        line.setAttribute("stroke-width", 3.6);
         treeCanvas.appendChild(line);
 
         line = line.cloneNode(false);
@@ -307,12 +308,12 @@ function drawGameTreeNode(treeCanvas, board, x, y) {
           } m -12,0 a 12,12 0 1,0 24,0 a 12,12 0 1,0 -24,0`,
         );
         path.setAttribute("stroke", "#224");
-        path.setAttribute("stroke-width", 9 * 1.2);
+        path.setAttribute("stroke-width", 10.8);
         treeCanvas.appendChild(path);
 
         path = path.cloneNode(false);
         path.setAttribute("stroke", "#7df");
-        path.setAttribute("stroke-width", 3 * 1.2);
+        path.setAttribute("stroke-width", 3.6);
         treeCanvas.appendChild(path);
       }
     }
@@ -463,33 +464,37 @@ function expandGameTree(treeCanvas, board, nextX, nextY) {
   }
 }
 
-function PracticeTicTacToe() {
+function PracticeTicTacToe(props) {
+  const { webSocket, webSocketState } = props;
+
+  const webSocketStateRef = useRef(webSocketState);
+
   const gameCanvas = useRef(null);
   const treeCanvas = useRef(null);
   const turnIndicator = useRef(null);
   const loadingIndicator = useRef(null);
 
   const board = useRef(new Array(9).fill(null));
-  let settingsAbortController = useRef(null);
   let busy = useRef(null);
   let currentX = 0;
   let currentY = 0;
 
   const { alphaBetaPruning, depthLimit, depthLimitValue } =
     useContext(EnvironmentContext);
-  const alphaBetaPruningRef = useRef(alphaBetaPruning);
-  const depthLimitRef = useRef(depthLimit);
-  const depthLimitValueRef = useRef(depthLimitValue);
+  const alphaBetaPruningRef = useRef(null);
+  const depthLimitRef = useRef(null);
+  const depthLimitValueRef = useRef(null);
 
-  const [status, setStatus] = useState("loading");
-  const statusRef = useRef(status);
+  const taskAbortController = useRef(null);
+
+  let turn = useRef("Maximizer");
 
   async function getEvaluations() {
-    if (statusRef.current == "loading") {
+    if (webSocketStateRef.current == "CONNECTING") {
       return;
     }
 
-    if (statusRef.current == "offline") {
+    if (webSocketStateRef.current == "CLOSED") {
       let evaluations = [];
       for (let i = 0; i < 9; i++) {
         if (!board.current[i]) {
@@ -500,47 +505,102 @@ function PracticeTicTacToe() {
       return;
     }
 
-    settingsAbortController.current?.abort();
-    settingsAbortController.current = new AbortController();
-    const signal = settingsAbortController.current.signal;
-    let state = "";
-    for (let i = 0; i < 9; i++) {
-      if (board.current[i]) {
-        state += board.current[i];
-      } else state += "_";
-    }
-    const evaluationNodes = document.getElementsByClassName("evaluationNode");
-    // console.log(
-    //   `http://127.0.0.1:8000/tic_tac_toe/${state}?alpha_beta_pruning=${alphaBetaPruningRef.current}&depth_limit=${depthLimitRef.current}&depth_limit_value=${depthLimitValueRef.current}`,
-    // );
-    await fetch(
-      `http://127.0.0.1:8000/tic_tac_toe/${state}?alpha_beta_pruning=${alphaBetaPruningRef.current}&depth_limit=${depthLimitRef.current}&depth_limit_value=${depthLimitValueRef.current}`,
-      { signal },
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const evaluations = data.evaluations;
-        let i = evaluationNodes.length;
-        let j = 1;
-        while (evaluations.length - j >= 0) {
-          i--;
-          evaluationNodes[i].textContent = evaluations[evaluations.length - j];
-          j++;
+    if (webSocketStateRef.current == "OPEN") {
+      taskAbortController.current?.abort();
+
+      if (
+        turnIndicator.current.textContent ==
+        "Requested calculation is too computationally expensive!"
+      ) {
+        if (turn.current == "Maximizer") {
+          turnIndicator.current.classList.remove("fadeIn");
+          turnIndicator.current.classList.add("fadeOut");
+          const turnInterval = setInterval(() => {
+            if (turnIndicator.current) {
+              turnIndicator.current.classList.remove("fadeOut");
+              turnIndicator.current.classList.add("fadeIn");
+              turnIndicator.current.textContent = "Maximizer's turn";
+              turnIndicator.current.setAttribute("fill", "#fd7");
+              clearInterval(turnInterval);
+            }
+          }, 312.5);
         }
-        loadingIndicator.current.classList.remove("fadeIn");
-        loadingIndicator.current.classList.add("fadeOut");
-        getEvaluationsPromiseResolve(evaluations);
-      })
-      .catch((error) => {
-        if (error.name != "AbortError") {
-          console.error(error.name);
-          console.error(error);
+        if (turn.current == "Minimizer") {
+          turnIndicator.current.classList.remove("fadeIn");
+          turnIndicator.current.classList.add("fadeOut");
+          const turnInterval = setInterval(() => {
+            if (turnIndicator.current) {
+              turnIndicator.current.classList.remove("fadeOut");
+              turnIndicator.current.classList.add("fadeIn");
+              turnIndicator.current.textContent = "Minimizer's turn";
+              turnIndicator.current.setAttribute("fill", "#f77");
+              clearInterval(turnInterval);
+            }
+          }, 312.5);
         }
+      }
+
+      const id = Math.random();
+      let state = "";
+      for (let i = 0; i < 9; i++) {
+        if (board.current[i]) {
+          state += board.current[i];
+        } else state += "_";
+      }
+      console.log(
+        JSON.stringify({
+          type: "tic_tac_toe",
+          board: state,
+          alpha_beta_pruning: alphaBetaPruningRef.current,
+          depth_limit: depthLimitRef.current,
+          depth_limit_value: depthLimitValueRef.current,
+          id: id,
+        }),
+      ); // <- ...
+      webSocket.send(
+        JSON.stringify({
+          type: "tic_tac_toe",
+          board: state,
+          alpha_beta_pruning: alphaBetaPruningRef.current,
+          depth_limit: depthLimitRef.current,
+          depth_limit_value: depthLimitValueRef.current,
+          id: id,
+        }),
+      );
+
+      taskAbortController.current = new AbortController();
+
+      await new Promise((r) => {
+        const timeoutId = setTimeout(r, 5000);
+        taskAbortController.current.signal.addEventListener("abort", () => {
+          clearTimeout(timeoutId);
+          return;
+        });
       });
+
+      // console.log(JSON.stringify({ type: "cancel_task" })); // <- ...
+      webSocket.send(JSON.stringify({ type: "cancel_task" }));
+
+      loadingIndicator.current.classList.remove("fadeIn");
+      loadingIndicator.current.classList.add("fadeOut");
+
+      turnIndicator.current.classList.remove("fadeIn");
+      turnIndicator.current.classList.add("fadeOut");
+      const turnInterval = setInterval(() => {
+        turnIndicator.current.classList.remove("fadeOut");
+        turnIndicator.current.classList.add("fadeIn");
+        turnIndicator.current.textContent =
+          "Requested calculation is too computationally expensive!";
+        turnIndicator.current.setAttribute("fill", "#fff");
+        clearInterval(turnInterval);
+      }, 312.5);
+    }
   }
 
   async function startGame() {
     gameCanvas.current.innerHTML = "";
+
+    turn.current = "Maximizer";
 
     if (currentY) {
       const lossX = currentX / 50;
@@ -583,6 +643,60 @@ function PracticeTicTacToe() {
 
   useEffect(() => {
     const practiceAbortController = new AbortController();
+
+    webSocket.onmessage = (event) => {
+      if (practiceAbortController.signal.aborted) return;
+      taskAbortController.current?.abort();
+
+      if (
+        turnIndicator.current.textContent ==
+        "Requested calculation is too computationally expensive!"
+      ) {
+        if (turn.current == "Maximizer") {
+          turnIndicator.current.classList.remove("fadeIn");
+          turnIndicator.current.classList.add("fadeOut");
+          const turnInterval = setInterval(() => {
+            if (!practiceAbortController.signal.aborted) {
+              turnIndicator.current.classList.remove("fadeOut");
+              turnIndicator.current.classList.add("fadeIn");
+              turnIndicator.current.textContent = "Maximizer's turn";
+              turnIndicator.current.setAttribute("fill", "#fd7");
+              clearInterval(turnInterval);
+            }
+          }, 312.5);
+        }
+        if (turn.current == "Minimizer") {
+          turnIndicator.current.classList.remove("fadeIn");
+          turnIndicator.current.classList.add("fadeOut");
+          const turnInterval = setInterval(() => {
+            if (!practiceAbortController.signal.aborted) {
+              turnIndicator.current.classList.remove("fadeOut");
+              turnIndicator.current.classList.add("fadeIn");
+              turnIndicator.current.textContent = "Minimizer's turn";
+              turnIndicator.current.setAttribute("fill", "#f77");
+              clearInterval(turnInterval);
+            }
+          }, 312.5);
+        }
+      }
+
+      const evaluationNodes = document.getElementsByClassName("evaluationNode");
+      console.log(
+        JSON.parse(event.data).evaluations,
+        JSON.parse(event.data).id,
+      ); // <- ...
+      const evaluations = JSON.parse(event.data).evaluations;
+      let i = evaluationNodes.length;
+      let j = 1;
+      while (evaluations.length - j >= 0) {
+        i--;
+        evaluationNodes[i].textContent = evaluations[evaluations.length - j];
+        j++;
+      }
+      loadingIndicator.current.classList.remove("fadeIn");
+      loadingIndicator.current.classList.add("fadeOut");
+      getEvaluationsPromiseResolve(evaluations);
+    };
 
     drawBoard(gameCanvas.current.parentNode);
 
@@ -683,6 +797,7 @@ function PracticeTicTacToe() {
           if (!practiceAbortController.signal.aborted) {
             turnIndicator.current.classList.remove("fadeOut");
             turnIndicator.current.classList.add("fadeIn");
+            turn.current = "Minimizer";
             turnIndicator.current.textContent = "Minimizer's turn";
             turnIndicator.current.setAttribute("fill", "#7df");
             clearInterval(turnInterval);
@@ -761,6 +876,7 @@ function PracticeTicTacToe() {
           if (!practiceAbortController.signal.aborted) {
             turnIndicator.current.classList.remove("fadeOut");
             turnIndicator.current.classList.add("fadeIn");
+            turn.current = "Maximizer";
             turnIndicator.current.textContent = "Maximizer's turn";
             turnIndicator.current.setAttribute("fill", "#f97");
             clearInterval(turnInterval);
@@ -785,43 +901,36 @@ function PracticeTicTacToe() {
 
     drawGameTreeNode(treeCanvas.current, board.current, 630, 0);
     expandGameTree(treeCanvas.current, board.current, 0, 0);
-    getStatus();
-
-    async function getStatus() {
-      busy.current = true;
-      const signal = practiceAbortController.signal;
-      await fetch("http://127.0.0.1:8000/status", { signal })
-        .then((response) => response.json())
-        .then((data) => {
-          setStatus(data.status);
-        })
-        .catch((error) => {
-          if (error.name != "AbortError") {
-            setStatus("offline");
-          }
-        });
-    }
 
     return () => {
       practiceAbortController?.abort();
-      settingsAbortController.current?.abort();
+      taskAbortController.current?.abort();
+      // console.log(JSON.stringify({ type: "cancel_task" })); // <- ...
+      webSocket.send(JSON.stringify({ type: "cancel_task" }));
     };
   }, []);
 
   useEffect(() => {
-    alphaBetaPruningRef.current = alphaBetaPruning;
-    depthLimitRef.current = depthLimit;
-    depthLimitValueRef.current = depthLimitValue;
-    if (statusRef.current != "loading") {
+    if (
+      webSocketStateRef.current != "CONNECTING" &&
+      depthLimitValueRef.current
+    ) {
       loadingIndicator.current.classList.remove("fadeOut");
       loadingIndicator.current.classList.add("fadeIn");
+      alphaBetaPruningRef.current = alphaBetaPruning;
+      depthLimitRef.current = depthLimit;
+      depthLimitValueRef.current = depthLimitValue;
       getEvaluations();
+    } else {
+      alphaBetaPruningRef.current = alphaBetaPruning;
+      depthLimitRef.current = depthLimit;
+      depthLimitValueRef.current = depthLimitValue;
     }
   }, [alphaBetaPruning, depthLimit, depthLimitValue]);
 
   useEffect(() => {
-    statusRef.current = status;
-    if (status == "offline") {
+    webSocketStateRef.current = webSocketState;
+    if (webSocketState == "CLOSED") {
       turnIndicator.current.classList.add("offline");
       loadingIndicator.current.classList.add("offline");
 
@@ -836,16 +945,16 @@ function PracticeTicTacToe() {
       text.setAttribute("stroke", "#224");
       text.setAttribute("fill", "#fff");
 
-      text.setAttribute("font-size", 23.625 * 1.75);
-      text.setAttribute("y", -50.4 - 6.3 - 6.3 - 6.3);
-      text.setAttribute("stroke-width", 6 * 1.75);
+      text.setAttribute("font-size", 41.34375);
+      text.setAttribute("y", -69.3);
+      text.setAttribute("stroke-width", 10.5);
       text.textContent = "MiniMax API is offline...";
       treeCanvas.current.parentNode.appendChild(text);
 
       text = text.cloneNode(false);
-      text.setAttribute("font-size", 23.625 * 1);
-      text.setAttribute("y", -25.2 - 2.1);
-      text.setAttribute("stroke-width", 6 * 1);
+      text.setAttribute("font-size", 23.625);
+      text.setAttribute("y", -27.3);
+      text.setAttribute("stroke-width", 6);
       treeCanvas.current.parentNode.appendChild(text);
 
       let tspan = document.createElementNS(
@@ -866,8 +975,9 @@ function PracticeTicTacToe() {
       tspan.setAttribute("fill", "#fff");
       text.appendChild(tspan);
     }
-    if (status != "loading") startGame();
-  }, [status]);
+    if (webSocketState != "CONNECTING") startGame();
+    else busy.current = true;
+  }, [webSocketState]);
 
   return (
     <div className="gameContainer">
@@ -884,9 +994,15 @@ function PracticeTicTacToe() {
   );
 }
 
+// <- useMemo?
 let getEvaluationsPromiseResolve;
 let getEvaluationsPromise = new Promise((resolve) => {
   getEvaluationsPromiseResolve = resolve;
 });
+
+PracticeTicTacToe.propTypes = {
+  webSocket: PropTypes.instanceOf(WebSocket).isRequired,
+  webSocketState: PropTypes.string,
+};
 
 export default PracticeTicTacToe;

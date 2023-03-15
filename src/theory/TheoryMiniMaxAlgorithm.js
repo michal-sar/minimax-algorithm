@@ -38,7 +38,7 @@ function TheoryMiniMaxAlgorithm() {
         <span className="outlineYellow">current state</span> of the game. It
         evaluates every node it encounters.
       </p>
-      <div className="imageContainer">
+      <div className="imageContainerDouble">
         <div>
           <GameTree />
           <p className="imageDescription">
@@ -162,7 +162,7 @@ function TheoryMiniMaxAlgorithm() {
         .
       </p>
       <p>Below you can see the MiniMax algorithm in action:</p>
-      <div className="imageContainer">
+      <div className="imageContainerSingle">
         <div>
           <MiniMax />
           <p className="imageDescription">

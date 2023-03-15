@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import PracticeTree from "./PracticeTree";
 import PracticeTicTacToe from "./PracticeTicTacToe";
@@ -7,13 +7,37 @@ import "./Practice.css";
 
 function Practice(props) {
   const { practice } = props;
+
+  const webSocket = useMemo(() => {
+    return new WebSocket("ws://localhost:8000/ws");
+  }, []);
+  const [webSocketState, setWebSocketState] = useState("CONNECTING");
+
+  webSocket.onopen = () => {
+    setWebSocketState("OPEN");
+  };
+
+  webSocket.onclose = () => {
+    setWebSocketState("CLOSED");
+  };
+
   switch (practice) {
     case "Tree":
       return <PracticeTree />;
     case "TicTacToe":
-      return <PracticeTicTacToe />;
+      return (
+        <PracticeTicTacToe
+          webSocket={webSocket}
+          webSocketState={webSocketState}
+        />
+      );
     case "ConnectFour":
-      return <PracticeConnectFour />;
+      return (
+        <PracticeConnectFour
+          webSocket={webSocket}
+          webSocketState={webSocketState}
+        />
+      );
   }
 }
 
