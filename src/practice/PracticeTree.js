@@ -255,7 +255,7 @@ function PracticeTree(props) {
       <h3 className="practiceTitle">Tree</h3>
       <Canvas ref={canvas} />
       <h4 className="codeLabel">Code:</h4>
-      <h4>Number of visited nodes:</h4>
+      <h4>Evaluated nodes:</h4>
       <h4>Decision:</h4>
     </div>
   );

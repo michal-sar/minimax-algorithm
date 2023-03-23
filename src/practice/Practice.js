@@ -9,7 +9,7 @@ function Practice(props) {
   const { practice } = props;
 
   const webSocket = useMemo(() => {
-    return new WebSocket("ws://localhost:8000/ws");
+    return new WebSocket("ws://minimax-algorithm.pagekite.me/ws");
   }, []);
   const [webSocketState, setWebSocketState] = useState("CONNECTING");
 
@@ -17,8 +17,8 @@ function Practice(props) {
     setWebSocketState("OPEN");
   };
 
-  webSocket.onclose = () => {
-    setWebSocketState("CLOSED");
+  webSocket.onclose = (event) => {
+    setWebSocketState(String(event.code));
   };
 
   switch (practice) {

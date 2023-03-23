@@ -234,30 +234,47 @@
 }
 
 .offlineText,
-.turnIndicator.fadeIn {
-  animation-duration: 0.3125s;
+.requestStatusIndicator.fadeIn,
+.evaluatedNodesIndicator.fadeIn {
   animation-fill-mode: forwards;
   animation-name: fadeIn;
   animation-timing-function: cubic-bezier(0, 0.7, 1, 1);
 }
 
-.turnIndicator.fadeOut {
+.requestStatusIndicator.fadeIn {
   animation-duration: 0.3125s;
+}
+
+.evaluatedNodesIndicator.fadeIn {
+  animation-duration: 0.2s;
+}
+
+.requestStatusIndicator.fadeOut,
+.evaluatedNodesIndicator.fadeOut {
   animation-fill-mode: forwards;
   animation-name: fadeOut;
   animation-timing-function: cubic-bezier(0.7, 0, 1, 1);
 }
 
-.turnIndicator.offline {
+.requestStatusIndicator.fadeOut {
+  animation-duration: 0.3125s;
+}
+
+.evaluatedNodesIndicator.fadeOut {
+  animation-duration: 0.2s;
+}
+
+.requestStatusIndicator.offline,
+.evaluatedNodesIndicator.offline {
   opacity: 0;
 }
 
-.loadingIndicator.fadeOut {
+.waitingIndicator.fadeOut {
   opacity: 0;
   transition: all 0.2s;
 }
 
-.loadingIndicator.fadeIn {
+.waitingIndicator.fadeIn {
   opacity: 1;
   transition: all 0.2s;
 }

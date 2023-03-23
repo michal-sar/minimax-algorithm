@@ -19,7 +19,9 @@ function Environment() {
       <section>
         <h1>MiniMax algorithm</h1>
         <TheoryButtons theory={theory} setTheory={setTheory} />
-        <Theory theory={theory} />
+        <EnvironmentContext.Provider value={{ depthLimit, depthLimitValue }}>
+          <Theory theory={theory} />
+        </EnvironmentContext.Provider>
         <h3>
           Choose how you want to learn or experiment with the MiniMax algorithm
           and alpha-beta pruning:

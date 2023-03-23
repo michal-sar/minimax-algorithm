@@ -1,16 +1,48 @@
 import React from "react";
 import SimpleBar from "simplebar-react";
+import MiniMaxAlphaBeta from "../../public/images/minimax-alpha-beta.svg";
 
 function TheoryAlphaBetaPruning() {
   return (
     <SimpleBar id="theoryContainer">
       <p>
-        <b>Alpha-beta pruning</b> ...
+        The entire partial game tree is traversed by the MiniMax algorithm, as
+        described in the previous section. This can be too computationally
+        expensive for some states of games with a deep game tree and a large{" "}
+        <u>average branching factor</u> (average number of moves that can be
+        made in a specific state of the game). Because of that, techniques
+        limiting the number of necessary evaluations were introduced.
+      </p>
+      <p>
+        <b>Alpha-beta pruning</b> allows for ignoring parts of the game tree
+        that would not influence the determination of the optimal move.
+      </p>
+      <p>
+        This optimization can be done by keeping track of{" "}
+        <u>the highest score reachable for the maximizer</u> (
+        <span className="monospaced">α</span>) and{" "}
+        <u>the lowest score reachable for the minimizer</u> (
+        <span className="monospaced">β</span>) out of the scores assigned so
+        far. That way, if a node with a score worse than or equal to{" "}
+        <span className="monospaced">α</span> is available on a given path
+        during the minimizer’s turn, further evaluations can be omitted, as we
+        know that this branch will not be chosen by the maximizer in the first
+        place. Likewise, if a node with a score better than or equal to{" "}
+        <span className="monospaced">β</span> is available on a given path
+        during the maximizer’s turn, further evaluations can be omitted as well.
+      </p>
+      <p>
+        The results obtained from the MiniMax algorithm with and without
+        alpha-beta pruning are identical despite the significant improvement in
+        performance provided by alpha-beta pruning.
+      </p>
+      <p>
+        The following pseudocode describes the MiniMax algorithm with alpha-beta
+        pruning:
       </p>
       <div className="monospaced">
-        α — ...
-        <br />
-        β — ...
+        α — <u>the highest score reachable for the maximizer</u>
+        <br />β — <u>the lowest score reachable for the minimizer</u>
         <br />
         <br />
         <b>function</b> MiniMaxAlphaBeta(n, maximizer_turn, α, β)
@@ -31,7 +63,7 @@ function TheoryAlphaBetaPruning() {
         <br />
         <span className="unselectable">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>α {"<-"} Max(α, MiniMaxAlphaBeta(s,{" "}
-        <i>false</i>, α, β))
+        <i>False</i>, α, β))
         <br />
         <span className="unselectable">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>
@@ -52,7 +84,7 @@ function TheoryAlphaBetaPruning() {
         <br />
         <span className="unselectable">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>β {"<-"} Min(β, MiniMaxAlphaBeta(s,{" "}
-        <i>true</i>, α, β))
+        <i>True</i>, α, β))
         <br />
         <span className="unselectable">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>
@@ -72,9 +104,27 @@ function TheoryAlphaBetaPruning() {
       <p>
         Initial call:{" "}
         <span className="monospaced">
-          MiniMaxAlphaBeta(n, <i>true</i>, -∞, +∞)
+          MiniMaxAlphaBeta(n, <i>True</i>, -∞, +∞)
         </span>
         .
+      </p>
+      <p>
+        Below you can see the MiniMax algorithm with alpha-beta pruning in
+        action:
+      </p>
+      <div className="imageContainerSingle">
+        <div>
+          <MiniMaxAlphaBeta />
+          <p className="imageDescription">
+            <b>Image 4:</b> MiniMax algorithm with alpha-beta pruning in action.
+          </p>
+        </div>
+      </div>
+      <p>
+        Unfortunately, even with this optimization, the calculation can still be
+        too computationally expensive. Luckily, other methods of limiting the
+        number of node evaluations are available – one of them is using a{" "}
+        <b>depth limit</b>.
       </p>
     </SimpleBar>
   );

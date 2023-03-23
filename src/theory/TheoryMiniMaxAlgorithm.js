@@ -102,7 +102,7 @@ function TheoryMiniMaxAlgorithm() {
         <br />
         Min — returns the lowest number given as an input parameter
         <br />
-        maximizer_turn — binary variable (<i>true</i> when it’s the maximizer’s
+        maximizer_turn — binary variable (<i>True</i> when it’s the maximizer’s
         turn)
         <br />
         <br />
@@ -126,7 +126,7 @@ function TheoryMiniMaxAlgorithm() {
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
         <span className="line">⎪ ⎪ ⎪ </span>
-        <span hidden>{"      "}</span>v {"<-"} Max(v, MiniMax(s, <i>false</i>))
+        <span hidden>{"      "}</span>v {"<-"} Max(v, MiniMax(s, <i>False</i>))
         <br />
         <span className="line">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
@@ -143,7 +143,7 @@ function TheoryMiniMaxAlgorithm() {
         <b>for each</b> s ∈ S(s) <b>do</b>
         <br />
         <span className="line">⎪ ⎪ ⎪ </span>
-        <span hidden>{"      "}</span>v {"<-"} Min(v, MiniMax(s, <i>true</i>))
+        <span hidden>{"      "}</span>v {"<-"} Min(v, MiniMax(s, <i>True</i>))
         <br />
         <span className="line">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
@@ -157,7 +157,7 @@ function TheoryMiniMaxAlgorithm() {
       <p>
         Initial call:{" "}
         <span className="monospaced">
-          MiniMax(n, <i>true</i>)
+          MiniMax(n, <i>True</i>)
         </span>
         .
       </p>
