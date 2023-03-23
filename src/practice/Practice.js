@@ -9,7 +9,7 @@ function Practice(props) {
   const { practice } = props;
 
   const webSocket = useMemo(() => {
-    return new WebSocket("ws://minimax-algorithm.pagekite.me/ws");
+    return new WebSocket("wss://minimax-algorithm.pagekite.me/ws");
   }, []);
   const [webSocketState, setWebSocketState] = useState("CONNECTING");
 
