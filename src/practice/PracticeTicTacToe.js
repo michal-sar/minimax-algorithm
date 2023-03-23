@@ -468,7 +468,6 @@ function PracticeTicTacToe(props) {
         currentY -= 378;
 
         const evaluations = await getEvaluationsPromise;
-        await new Promise((r) => setTimeout(r, 1000));
         const newMove = evaluations.indexOf(Math.min(...evaluations));
         let move = -1;
         let skipMoves = newMove;
@@ -516,6 +515,7 @@ function PracticeTicTacToe(props) {
           currentX - gainX,
           currentY - 378,
         );
+        await new Promise((r) => setTimeout(r, 1000));
         getEvaluations();
 
         requestStatusIndicator.current.classList.remove("fadeIn");
@@ -550,8 +550,8 @@ function PracticeTicTacToe(props) {
 
     treeCanvas.current.parentNode.addEventListener("mousemove", (event) => {
       if (event.buttons == 1) {
-        offsetX += parseFloat(event.movementX * 1.62);
-        offsetY += parseFloat(event.movementY * 1.62);
+        offsetX += parseFloat(event.movementX * 1.46);
+        offsetY += parseFloat(event.movementY * 1.46);
         treeCanvas.current.setAttribute(
           "transform",
           `translate(${currentX + offsetX}, ${currentY + offsetY})`,

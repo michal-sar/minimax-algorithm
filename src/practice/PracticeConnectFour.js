@@ -515,7 +515,6 @@ function PracticeConnectFour(props) {
         currentY -= 834;
 
         const evaluations = await getEvaluationsPromise;
-        await new Promise((r) => setTimeout(r, 1000));
         const newMove = evaluations.indexOf(Math.min(...evaluations));
         let move = -1;
         let skipMoves = newMove;
@@ -606,6 +605,7 @@ function PracticeConnectFour(props) {
           currentX - gainX,
           currentY - 834,
         );
+        await new Promise((r) => setTimeout(r, 1000));
         getEvaluations();
 
         requestStatusIndicator.current.classList.remove("fadeIn");
@@ -640,8 +640,8 @@ function PracticeConnectFour(props) {
 
     treeCanvas.current.parentNode.addEventListener("mousemove", (event) => {
       if (event.buttons == 1) {
-        offsetX += parseFloat((event.movementX * (1.62 * 278)) / 126);
-        offsetY += parseFloat((event.movementY * (1.62 * 278)) / 126);
+        offsetX += parseFloat((event.movementX * (1.46 * 278)) / 126);
+        offsetY += parseFloat((event.movementY * (1.46 * 278)) / 126);
         treeCanvas.current.setAttribute(
           "transform",
           `translate(${currentX + offsetX}, ${currentY + offsetY})`,
