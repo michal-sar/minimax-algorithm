@@ -98,7 +98,7 @@ async function drawO(gameCanvas, index) {
   await new Promise((r) => setTimeout(r, 500));
 }
 
-function drawGameTreeNode(treeCanvas, board, x, y) {
+function drawTicTacToeGameTreeNode(treeCanvas, board, x, y) {
   let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
   line.setAttribute("x1", x - 21.5);
   line.setAttribute("x2", x - 21.5);
@@ -205,7 +205,7 @@ function expandGameTree(treeCanvas, board, nextX, nextY) {
   let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
   rect.setAttribute("rx", 3);
   rect.setAttribute("ry", 3);
-  rect.setAttribute("width", 46);
+  rect.setAttribute("width", 56);
   rect.setAttribute("height", 26);
   rect.setAttribute("fill", "#fff");
   rect.setAttribute("stroke", "#224");
@@ -276,7 +276,7 @@ function expandGameTree(treeCanvas, board, nextX, nextY) {
     treeCanvas.appendChild(line);
 
     rect = rect.cloneNode(false);
-    rect.setAttribute("x", x2 * 0.5 + newX1 * 0.5 - 23);
+    rect.setAttribute("x", x2 * 0.5 + newX1 * 0.5 - 28);
     rect.setAttribute("y", y2 * 0.5 + newY1 * 0.5 - 13);
     treeCanvas.appendChild(rect);
 
@@ -299,8 +299,14 @@ function expandGameTree(treeCanvas, board, nextX, nextY) {
     text.setAttribute("y", y2 * 0.5 + newY1 * 0.5);
     treeCanvas.appendChild(text);
 
-    drawGameTreeNode(treeCanvas, children[i], x2, y2);
+    drawTicTacToeGameTreeNode(treeCanvas, children[i], x2, y2);
   }
 }
 
-export { drawTicTacToeBoard, drawX, drawO, drawGameTreeNode, expandGameTree };
+export {
+  drawTicTacToeBoard,
+  drawX,
+  drawO,
+  drawTicTacToeGameTreeNode,
+  expandGameTree,
+};

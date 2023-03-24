@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useContext } from "react";
 import { EnvironmentContext } from "../Environment";
 import PropTypes from "prop-types";
+import { checkConnectFourVictory } from "./helperConnectFour";
+import { refocusGameTree } from "./helperGameTree";
 import {
   drawConnectFourBoard,
   drawYellow,
   drawRed,
-  drawGameTreeNode,
+  drawConnectFourGameTreeNode,
   expandGameTree,
 } from "./drawConnectFour";
 import {
@@ -156,91 +158,6 @@ async function handleGameOver(gameCanvas, result) {
   gameCanvas.parentNode.removeChild(text);
 }
 
-function checkVictory(board, col) {
-  const row = board[col].length - 1;
-
-  const colRangeStart = Math.max(0, col - 3);
-  const colRangeEnd = Math.min(6, col + 3);
-  const rowRangeStart = Math.max(0, row - 3);
-  const rowRangeEnd = Math.min(5, row + 3);
-
-  let rowTemp, colTemp;
-
-  if (
-    row >= 3 &&
-    board[col][row] == board[col][row - 1] &&
-    board[col][row] == board[col][row - 2] &&
-    board[col][row] == board[col][row - 3]
-  )
-    return true;
-
-  let count = 0;
-  for (colTemp = colRangeStart; colTemp <= colRangeEnd; colTemp++) {
-    if (board[col][row] == board[colTemp][row]) {
-      count++;
-      if (count == 4) return true;
-    } else count = 0;
-  }
-
-  count = 0;
-  colTemp = col;
-  rowTemp = row;
-  while (colTemp > colRangeStart && rowTemp < rowRangeEnd) {
-    colTemp--;
-    rowTemp++;
-  }
-  while (colTemp <= colRangeEnd && rowTemp >= rowRangeStart) {
-    if (board[colTemp][rowTemp] == board[col][row]) {
-      count++;
-      if (count == 4) {
-        return true;
-      }
-    } else {
-      count = 0;
-    }
-    colTemp++;
-    rowTemp--;
-  }
-
-  count = 0;
-  colTemp = col;
-  rowTemp = row;
-  while (colTemp < colRangeEnd && rowTemp < rowRangeEnd) {
-    colTemp++;
-    rowTemp++;
-  }
-  while (colTemp >= colRangeStart && rowTemp >= rowRangeStart) {
-    if (board[colTemp][rowTemp] == board[col][row]) {
-      count++;
-      if (count == 4) {
-        return true;
-      }
-    } else {
-      count = 0;
-    }
-    colTemp--;
-    rowTemp--;
-  }
-
-  return false;
-}
-
-async function refocusGameTree(treeCanvas, currentX, currentY, gainX, gainY) {
-  let newX = currentX;
-  let newY = currentY;
-
-  gainX /= 25;
-  gainY /= 25;
-
-  for (let i = 0; i < 25; i++) {
-    if (!treeCanvas) return;
-    newX -= gainX;
-    newY -= gainY;
-    treeCanvas.setAttribute("transform", `translate(${newX}, ${newY})`);
-    await new Promise((r) => setTimeout(r, 25));
-  }
-}
-
 function PracticeConnectFour(props) {
   const { webSocket, webSocketState } = props;
   const webSocketStateRef = useRef(webSocketState);
@@ -360,7 +277,7 @@ function PracticeConnectFour(props) {
     requestStatusIndicator.current.setAttribute("fill", "#fd7");
     requestStatusIndicator.current.textContent = "Maximizer's turn";
 
-    drawGameTreeNode(treeCanvas.current, board.current, 1390, 0);
+    drawConnectFourGameTreeNode(treeCanvas.current, board.current, 1390, 0);
     expandGameTree(treeCanvas.current, board.current, "y", 0, 0);
     getEvaluations();
   }
@@ -451,7 +368,7 @@ function PracticeConnectFour(props) {
           board.current[index].filter((tile) => tile).length
         ] = "y";
 
-        if (checkVictory(board.current, index)) {
+        if (checkConnectFourVictory(board.current, index)) {
           await refocusGameTree(
             treeCanvas.current,
             currentX + offsetX,
@@ -539,7 +456,7 @@ function PracticeConnectFour(props) {
         board.current[move][board.current[move].filter((tile) => tile).length] =
           "r";
 
-        if (checkVictory(board.current, move)) {
+        if (checkConnectFourVictory(board.current, move)) {
           await refocusGameTree(
             treeCanvas.current,
             currentX + offsetX,
@@ -649,7 +566,7 @@ function PracticeConnectFour(props) {
       }
     });
 
-    drawGameTreeNode(treeCanvas.current, board.current, 1390, 0);
+    drawConnectFourGameTreeNode(treeCanvas.current, board.current, 1390, 0);
     expandGameTree(treeCanvas.current, board.current, "y", 0, 0);
 
     return () => {

@@ -90,7 +90,7 @@ async function drawRed(gameCanvas, index) {
   await new Promise((r) => setTimeout(r, 125 * (row + 1)));
 }
 
-function drawGameTreeNode(treeCanvas, board, x, y) {
+function drawConnectFourGameTreeNode(treeCanvas, board, x, y) {
   const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
   rect.setAttribute("x", x - 137.5);
   rect.setAttribute("y", y + 20.5);
@@ -147,7 +147,7 @@ function expandGameTree(treeCanvas, board, player, nextX, nextY) {
   let rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
   rect.setAttribute("rx", (3 * 278) / 126);
   rect.setAttribute("ry", (3 * 278) / 126);
-  rect.setAttribute("width", (46 * 278) / 126);
+  rect.setAttribute("width", (56 * 278) / 126);
   rect.setAttribute("height", (26 * 278) / 126);
   rect.setAttribute("fill", "#fff");
   rect.setAttribute("stroke", "#224");
@@ -219,7 +219,7 @@ function expandGameTree(treeCanvas, board, player, nextX, nextY) {
     treeCanvas.appendChild(line);
 
     rect = rect.cloneNode(false);
-    rect.setAttribute("x", x2 * 0.5 + newX1 * 0.5 - (23 * 278) / 126);
+    rect.setAttribute("x", x2 * 0.5 + newX1 * 0.5 - (28 * 278) / 126);
     rect.setAttribute("y", y2 * 0.5 + newY1 * 0.5 - (13 * 278) / 126);
     treeCanvas.appendChild(rect);
 
@@ -242,7 +242,7 @@ function expandGameTree(treeCanvas, board, player, nextX, nextY) {
     text.setAttribute("y", y2 * 0.5 + newY1 * 0.5);
     treeCanvas.appendChild(text);
 
-    drawGameTreeNode(treeCanvas, children[i], x2, y2);
+    drawConnectFourGameTreeNode(treeCanvas, children[i], x2, y2);
   }
 }
 
@@ -250,6 +250,6 @@ export {
   drawConnectFourBoard,
   drawYellow,
   drawRed,
-  drawGameTreeNode,
+  drawConnectFourGameTreeNode,
   expandGameTree,
 };

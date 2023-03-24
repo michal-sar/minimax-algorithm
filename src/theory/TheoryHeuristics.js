@@ -1,7 +1,15 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SimpleBar from "simplebar-react";
-import { drawTicTacToeBoard } from "../practice/drawTicTacToe";
-import { drawConnectFourBoard } from "../practice/drawConnectFour";
+import { drawTicTacToeGameTreeNode } from "../practice/drawTicTacToe";
+import { drawConnectFourGameTreeNode } from "../practice/drawConnectFour";
+import {
+  getRandomTicTacToeState,
+  getTicTacToeEvaluation,
+} from "../practice/helperTicTacToe";
+import {
+  getRandomConnectFourState,
+  getConnectFourEvaluation,
+} from "../practice/helperConnectFour";
 
 const TicTacToeCanvas = React.forwardRef((_, ref) => {
   return (
@@ -21,14 +29,91 @@ const ConnectFourCanvas = React.forwardRef((_, ref) => {
 });
 ConnectFourCanvas.displayName = "ConnectFourCanvas";
 
+const TicTacToeEvaluation = React.forwardRef((_, ref) => {
+  return (
+    <svg
+      width="226.8"
+      viewBox="0 -10 226.8 38"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <text
+        fontSize="23.625"
+        textAnchor="middle"
+        dominantBaseline="hanging"
+        fontFamily="Nunito, sans-serif"
+        fontWeight="900"
+        x="113.4"
+        y="0"
+        paintOrder="stroke"
+        stroke="#224"
+        strokeWidth="6"
+        strokeLinejoin="round"
+        fill="#fff"
+        ref={ref}
+      ></text>
+    </svg>
+  );
+});
+TicTacToeEvaluation.displayName = "TicTacToeEvaluation";
+
+const ConnectFourEvaluation = React.forwardRef((_, ref) => {
+  return (
+    <svg
+      width="226.8"
+      viewBox="0 -10 226.8 38"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <text
+        fontSize="23.625"
+        textAnchor="middle"
+        dominantBaseline="hanging"
+        fontFamily="Nunito, sans-serif"
+        fontWeight="900"
+        x="113.4"
+        y="0"
+        paintOrder="stroke"
+        stroke="#224"
+        strokeWidth="6"
+        strokeLinejoin="round"
+        fill="#fff"
+        ref={ref}
+      ></text>
+    </svg>
+  );
+});
+ConnectFourEvaluation.displayName = "ConnectFourEvaluation";
+
 function TheoryHeuristics() {
   const ticTacToeCanvas = useRef(null);
   const connectFourCanvas = useRef(null);
+  const ticTacToeEvaluation = useRef(null);
+  const connectFourEvaluation = useRef(null);
+
+  const [ticTacToeBoard, setTicTacToeBoard] = useState(
+    getRandomTicTacToeState(),
+  );
+  const [connectFourBoard, setConnectFourBoard] = useState(
+    getRandomConnectFourState(),
+  );
 
   useEffect(() => {
-    drawTicTacToeBoard(ticTacToeCanvas.current.parentNode);
-    drawConnectFourBoard(connectFourCanvas.current.parentNode);
-  }, []);
+    ticTacToeCanvas.current.innerHTML = "";
+    drawTicTacToeGameTreeNode(ticTacToeCanvas.current, ticTacToeBoard, 63, 0);
+    ticTacToeEvaluation.current.textContent = `H(n) =  ${getTicTacToeEvaluation(
+      ticTacToeBoard,
+    )}`;
+
+    connectFourCanvas.current.innerHTML = "";
+    drawConnectFourGameTreeNode(
+      connectFourCanvas.current,
+      connectFourBoard,
+      139,
+      -19,
+    );
+    connectFourEvaluation.current.textContent = `H(n) = ${getConnectFourEvaluation(
+      connectFourBoard,
+    )}`;
+  }, [ticTacToeBoard, connectFourBoard]);
 
   return (
     <SimpleBar id="theoryContainer">
@@ -78,7 +163,8 @@ function TheoryHeuristics() {
           </div>
           <div className="functionValues">
             U(n), n ∈ F<br />
-            0, n ∉ F<br />
+            0.01 * (Yellow<sub>2</sub>(n) + 2 * Yellow<sub>3</sub>(n) - Red
+            <sub>2</sub>(n) - 2 * Red<sub>3</sub>(n)), n ∉ F<br />
           </div>
         </div>
         <br />
@@ -98,55 +184,47 @@ function TheoryHeuristics() {
       <div className="gameContainerDouble">
         <div>
           <TicTacToeCanvas ref={ticTacToeCanvas} />
-          <svg
-            width="283.5"
-            viewBox="0 -10 283.5 38"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <text
-              fontSize="23.625"
-              textAnchor="middle"
-              dominantBaseline="hanging"
-              fontFamily="Nunito, sans-serif"
-              fontWeight="900"
-              x="141.75"
-              y="0"
-              paintOrder="stroke"
-              stroke="#224"
-              strokeWidth="6"
-              strokeLinejoin="round"
-              fill="#fff"
+          <TicTacToeEvaluation ref={ticTacToeEvaluation} />
+          <button onClick={() => setTicTacToeBoard(getRandomTicTacToeState())}>
+            <svg
+              width="40"
+              viewBox="-10 -10 60 60"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              H(n) = 0
-            </text>
-          </svg>
-          {/* <button></button> */}
+              <path
+                transform="rotate(-140 20 20)"
+                fill="transparent"
+                stroke="#224"
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M 0 18 A 20 20, 0, 1, 0, 18 0 M 1 12 L 6.206604869410697 22.81162641482903 L -4.2066048694106986 22.81162641482903 Z"
+              />
+            </svg>
+          </button>
         </div>
         <div>
           <ConnectFourCanvas ref={connectFourCanvas} />
-          <svg
-            width="283.5"
-            viewBox="0 -10 283.5 38"
-            xmlns="http://www.w3.org/2000/svg"
+          <ConnectFourEvaluation ref={connectFourEvaluation} />
+          <button
+            onClick={() => setConnectFourBoard(getRandomConnectFourState())}
           >
-            <text
-              fontSize="23.625"
-              textAnchor="middle"
-              dominantBaseline="hanging"
-              fontFamily="Nunito, sans-serif"
-              fontWeight="900"
-              x="141.75"
-              y="0"
-              paintOrder="stroke"
-              stroke="#224"
-              strokeWidth="6"
-              strokeLinejoin="round"
-              fill="#fff"
+            <svg
+              width="40"
+              viewBox="-10 -10 60 60"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              H(n) = 0
-            </text>
-          </svg>
-          {/* <button></button> */}
+              <path
+                transform="rotate(-140 20 20)"
+                fill="transparent"
+                stroke="#224"
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M 0 18 A 20 20, 0, 1, 0, 18 0 M 1 12 L 6.206604869410697 22.81162641482903 L -4.2066048694106986 22.81162641482903 Z"
+              />
+            </svg>
+          </button>
         </div>
       </div>
       <p>
