@@ -89,7 +89,7 @@ function getRandomConnectFourState() {
   return randomBoard;
 }
 
-function getConnectFourEvaluation(n) {
+async function getConnectFourEstimation(connectFourEstimation, n) {
   for (let i = 0; i < 7; i++) {
     if (n[i][0] && checkConnectFourVictory(n, i)) {
       let yellowTokens = 0;
@@ -102,8 +102,13 @@ function getConnectFourEvaluation(n) {
           k++;
         }
       }
-      if (yellowTokens == redTokens) return -1;
-      else return 1;
+      if (yellowTokens == redTokens) {
+        connectFourEstimation.textContent = "H(n) = -1";
+        return;
+      } else {
+        connectFourEstimation.textContent = "H(n) = 1";
+        return;
+      }
     }
   }
 
@@ -117,86 +122,37 @@ function getConnectFourEvaluation(n) {
       !n[5][5] ||
       !n[6][5]
     )
-  )
-    return 0;
+  ) {
+    connectFourEstimation.textContent = "H(n) = 0";
+    return;
+  }
 
-  let tokens = 0;
-  let tokenMask = 0;
+  connectFourEstimation.textContent = "H(n) = ...";
+  let h = 0;
+  let state = "";
   for (let i = 0; i < 7; i++) {
     let j = 0;
     while (n[i][j]) {
-      if (n[i][j] == "y") {
-        tokens |= 1 << (i * 7 + j);
-        tokenMask |= tokens;
-      } else tokenMask |= 1 << (i * 7 + j);
+      state += n[i][j];
       j++;
     }
+    if (i < 6) state += ",";
   }
-  // console.log(tokens.toString(2));
-  // console.log(tokenMask.toString(2));
-  let h = 0;
-  let patternMask = (tokens | (tokens >>> 1)) & 137412980756383;
-  patternMask &= patternMask >>> 2;
-  h += patternMask.toString(2).split("1").length - 1;
-  patternMask = (tokens | (tokens >>> 7)) & 2181708111807;
-  patternMask &= patternMask >>> 14;
-  h += patternMask.toString(2).split("1").length - 1;
-  patternMask = (tokens | (tokens >>> 8)) & 1073538912159;
-  patternMask &= patternMask >>> 16;
-  h += patternMask.toString(2).split("1").length - 1;
-  patternMask = (tokens | (tokens >>> 6)) & 2147077824318;
-  patternMask &= patternMask >>> 12;
-  h += patternMask.toString(2).split("1").length - 1;
-  patternMask = tokens & (tokens >>> 1);
-  patternMask |= patternMask >>> 2;
-  patternMask &= 31028737590151;
-  h += patternMask.toString(2).split("1").length - 1;
-  patternMask = tokens & (tokens >>> 7);
-  patternMask |= patternMask >>> 14;
-  patternMask &= 133160895;
-  h += patternMask.toString(2).split("1").length - 1;
-  patternMask = tokens & (tokens >>> 8);
-  patternMask |= patternMask >>> 16;
-  patternMask &= 14795655;
-  h += patternMask.toString(2).split("1").length - 1;
-  patternMask = tokens & (tokens >>> 6);
-  patternMask |= patternMask >>> 12;
-  patternMask &= 118365240;
-  h += patternMask.toString(2).split("1").length - 1;
-  tokens = ~tokens & tokenMask;
-  patternMask = (tokens | (tokens >>> 1)) & 137412980756383;
-  patternMask &= patternMask >>> 2;
-  h -= patternMask.toString(2).split("1").length - 1;
-  patternMask = (tokens | (tokens >>> 7)) & 2181708111807;
-  patternMask &= patternMask >>> 14;
-  h -= patternMask.toString(2).split("1").length - 1;
-  patternMask = (tokens | (tokens >>> 8)) & 1073538912159;
-  patternMask &= patternMask >>> 16;
-  h -= patternMask.toString(2).split("1").length - 1;
-  patternMask = (tokens | (tokens >>> 6)) & 2147077824318;
-  patternMask &= patternMask >>> 12;
-  h -= patternMask.toString(2).split("1").length - 1;
-  patternMask = tokens & (tokens >>> 1);
-  patternMask |= patternMask >>> 2;
-  patternMask &= 31028737590151;
-  h -= patternMask.toString(2).split("1").length - 1;
-  patternMask = tokens & (tokens >>> 7);
-  patternMask |= patternMask >>> 14;
-  patternMask &= 133160895;
-  h -= patternMask.toString(2).split("1").length - 1;
-  patternMask = tokens & (tokens >>> 8);
-  patternMask |= patternMask >>> 16;
-  patternMask &= 14795655;
-  h -= patternMask.toString(2).split("1").length - 1;
-  patternMask = tokens & (tokens >>> 6);
-  patternMask |= patternMask >>> 12;
-  patternMask &= 118365240;
-  h -= patternMask.toString(2).split("1").length - 1;
-  return 0.01 * h;
+  await fetch(
+    `https://minimax-algorithm.pagekite.me/heuristic_function_connect_four/${state}`,
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      h = data.estimation;
+      connectFourEstimation.textContent = `H(n) = ${h.toFixed(2)}`;
+    })
+    .catch(() => {
+      connectFourEstimation.textContent = "You're offline...";
+    });
 }
 
 export {
   checkConnectFourVictory,
   getRandomConnectFourState,
-  getConnectFourEvaluation,
+  getConnectFourEstimation,
 };

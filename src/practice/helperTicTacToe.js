@@ -28,48 +28,48 @@ function getRandomTicTacToeState() {
   return randomBoard;
 }
 
-function getTicTacToeEvaluation(n) {
+async function getTicTacToeEstimation(ticTacToeEstimation, n) {
   if (checkTicTacToeVictory(n)) {
     if (
       n.filter((tile) => tile == "x").length ==
       n.filter((tile) => tile == "o").length
-    )
-      return -1;
-    else return 1;
+    ) {
+      ticTacToeEstimation.textContent = "H(n) = -1";
+      return;
+    } else {
+      ticTacToeEstimation.textContent = "H(n) = 1";
+      return;
+    }
   }
 
-  if (!n.some((tile) => tile == null)) return 0;
+  if (!n.some((tile) => tile == null)) {
+    ticTacToeEstimation.textContent = "H(n) = 0";
+    return;
+  }
 
-  const winningPatterns = [
-    [n[0], n[1], n[2]],
-    [n[3], n[4], n[5]],
-    [n[6], n[7], n[8]],
-    [n[0], n[3], n[6]],
-    [n[1], n[4], n[7]],
-    [n[2], n[5], n[8]],
-    [n[0], n[4], n[8]],
-    [n[2], n[4], n[6]],
-  ];
+  ticTacToeEstimation.textContent = "H(n) = ...";
   let h = 0;
-  for (const pattern of winningPatterns) {
-    if (
-      (pattern[0] == "x" && pattern[0] == pattern[1]) ||
-      (pattern[0] == "x" && pattern[0] == pattern[2]) ||
-      (pattern[1] == "x" && pattern[1] == pattern[2])
-    )
-      h += 0.15;
-    if (
-      (pattern[0] == "o" && pattern[0] == pattern[1]) ||
-      (pattern[0] == "o" && pattern[0] == pattern[2]) ||
-      (pattern[1] == "o" && pattern[1] == pattern[2])
-    )
-      h -= 0.15;
+  let state = "";
+  for (let i = 0; i < 9; i++) {
+    if (n[i]) {
+      state += n[i];
+    } else state += "_";
   }
-  return h == 0 ? h : h.toFixed(2);
+  await fetch(
+    `https://minimax-algorithm.pagekite.me/heuristic_function_tic_tac_toe/${state}`,
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      h = data.estimation;
+      ticTacToeEstimation.textContent = `H(n) = ${h.toFixed(2)}`;
+    })
+    .catch(() => {
+      ticTacToeEstimation.textContent = "You're offline...";
+    });
 }
 
 export {
   checkTicTacToeVictory,
   getRandomTicTacToeState,
-  getTicTacToeEvaluation,
+  getTicTacToeEstimation,
 };

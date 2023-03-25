@@ -4,11 +4,11 @@ import { drawTicTacToeGameTreeNode } from "../practice/drawTicTacToe";
 import { drawConnectFourGameTreeNode } from "../practice/drawConnectFour";
 import {
   getRandomTicTacToeState,
-  getTicTacToeEvaluation,
+  getTicTacToeEstimation,
 } from "../practice/helperTicTacToe";
 import {
   getRandomConnectFourState,
-  getConnectFourEvaluation,
+  getConnectFourEstimation,
 } from "../practice/helperConnectFour";
 
 const TicTacToeCanvas = React.forwardRef((_, ref) => {
@@ -29,7 +29,7 @@ const ConnectFourCanvas = React.forwardRef((_, ref) => {
 });
 ConnectFourCanvas.displayName = "ConnectFourCanvas";
 
-const TicTacToeEvaluation = React.forwardRef((_, ref) => {
+const TicTacToeEstimation = React.forwardRef((_, ref) => {
   return (
     <svg
       width="226.8"
@@ -54,9 +54,9 @@ const TicTacToeEvaluation = React.forwardRef((_, ref) => {
     </svg>
   );
 });
-TicTacToeEvaluation.displayName = "TicTacToeEvaluation";
+TicTacToeEstimation.displayName = "TicTacToeEstimation";
 
-const ConnectFourEvaluation = React.forwardRef((_, ref) => {
+const ConnectFourEstimation = React.forwardRef((_, ref) => {
   return (
     <svg
       width="226.8"
@@ -81,13 +81,13 @@ const ConnectFourEvaluation = React.forwardRef((_, ref) => {
     </svg>
   );
 });
-ConnectFourEvaluation.displayName = "ConnectFourEvaluation";
+ConnectFourEstimation.displayName = "ConnectFourEstimation";
 
 function TheoryHeuristics() {
   const ticTacToeCanvas = useRef(null);
   const connectFourCanvas = useRef(null);
-  const ticTacToeEvaluation = useRef(null);
-  const connectFourEvaluation = useRef(null);
+  const ticTacToeEstimation = useRef(null);
+  const connectFourEstimation = useRef(null);
 
   const [ticTacToeBoard, setTicTacToeBoard] = useState(
     getRandomTicTacToeState(),
@@ -99,10 +99,10 @@ function TheoryHeuristics() {
   useEffect(() => {
     ticTacToeCanvas.current.innerHTML = "";
     drawTicTacToeGameTreeNode(ticTacToeCanvas.current, ticTacToeBoard, 63, 0);
-    ticTacToeEvaluation.current.textContent = `H(n) =  ${getTicTacToeEvaluation(
-      ticTacToeBoard,
-    )}`;
+    getTicTacToeEstimation(ticTacToeEstimation.current, ticTacToeBoard);
+  }, [ticTacToeBoard]);
 
+  useEffect(() => {
     connectFourCanvas.current.innerHTML = "";
     drawConnectFourGameTreeNode(
       connectFourCanvas.current,
@@ -110,10 +110,8 @@ function TheoryHeuristics() {
       139,
       -19,
     );
-    connectFourEvaluation.current.textContent = `H(n) = ${getConnectFourEvaluation(
-      connectFourBoard,
-    )}`;
-  }, [ticTacToeBoard, connectFourBoard]);
+    getConnectFourEstimation(connectFourEstimation.current, connectFourBoard);
+  }, [connectFourBoard]);
 
   return (
     <SimpleBar id="theoryContainer">
@@ -163,7 +161,7 @@ function TheoryHeuristics() {
           </div>
           <div className="functionValues">
             U(n), n ∈ F<br />
-            0.01 * (Yellow<sub>2</sub>(n) + 2 * Yellow<sub>3</sub>(n) - Red
+            0.02 * (Yellow<sub>2</sub>(n) + 2 * Yellow<sub>3</sub>(n) - Red
             <sub>2</sub>(n) - 2 * Red<sub>3</sub>(n)), n ∉ F<br />
           </div>
         </div>
@@ -184,7 +182,7 @@ function TheoryHeuristics() {
       <div className="gameContainerDouble">
         <div>
           <TicTacToeCanvas ref={ticTacToeCanvas} />
-          <TicTacToeEvaluation ref={ticTacToeEvaluation} />
+          <TicTacToeEstimation ref={ticTacToeEstimation} />
           <button onClick={() => setTicTacToeBoard(getRandomTicTacToeState())}>
             <svg
               width="40"
@@ -205,7 +203,7 @@ function TheoryHeuristics() {
         </div>
         <div>
           <ConnectFourCanvas ref={connectFourCanvas} />
-          <ConnectFourEvaluation ref={connectFourEvaluation} />
+          <ConnectFourEstimation ref={connectFourEstimation} />
           <button
             onClick={() => setConnectFourBoard(getRandomConnectFourState())}
           >
