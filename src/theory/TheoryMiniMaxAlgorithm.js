@@ -110,45 +110,45 @@ function TheoryMiniMaxAlgorithm() {
         <br />
         <b>begin</b>
         <br />
-        <span className="line">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden>{"  "}</span>
         <b>if</b> n ∈ F <b>then return</b> U(n)
         <br />
-        <span className="line">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden>{"  "}</span>
         <b>if</b> maximizer_turn
         <br />
-        <span className="line">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>v {"<-"} -∞
         <br />
-        <span className="line">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="line">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>v {"<-"} Max(v, MiniMax(s, <i>False</i>))
         <br />
-        <span className="line">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
         <b>return</b> v<br />
-        <span className="line">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden>{"  "}</span>
         <b>else</b>
         <br />
-        <span className="line">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>v {"<-"} +∞
         <br />
-        <span className="line">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
-        <b>for each</b> s ∈ S(s) <b>do</b>
+        <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="line">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>v {"<-"} Min(v, MiniMax(s, <i>True</i>))
         <br />
-        <span className="line">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
         <b>return</b> v<br />
-        <span className="line">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden>{"  "}</span>
         <b>end</b>
         <br />

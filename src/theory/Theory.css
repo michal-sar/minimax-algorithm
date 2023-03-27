@@ -119,7 +119,7 @@ u {
   line-height: 2.1;
 }
 
-.line {
+.vertical {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
@@ -132,28 +132,4 @@ u {
   text-decoration-color: #f77;
   text-decoration-line: underline;
   text-decoration-thickness: 2px;
-}
-
-.gameContainerDouble > div > button {
-  align-self: center;
-  background-color: #fff;
-  border: 4px solid #224;
-  border-radius: 4px;
-  box-shadow: #ddd 8px 8px 0 -4px, #224 8px 8px;
-  cursor: pointer;
-  height: 60px;
-  margin-top: 20px;
-  transition: 0.3s;
-  transition-timing-function: ease-in-out;
-  width: 60px;
-}
-
-.gameContainerDouble > div > button:hover {
-  box-shadow: #fbb 10px 10px 0 -4px, #224 10px 10px;
-  transform: translate3d(-2px, -2px, 0);
-  transition: 0.2s;
-}
-
-.gameContainerDouble > div > button > svg {
-  vertical-align: middle;
 }

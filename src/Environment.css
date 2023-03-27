@@ -48,6 +48,9 @@ h4 {
   font-family: "Trap", sans-serif;
   font-size: 1.4rem;
   font-weight: 400;
+  text-decoration-color: #7f7;
+  text-decoration-line: underline;
+  text-decoration-thickness: 3px;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;

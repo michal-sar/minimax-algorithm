@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useContext } from "react";
-import { EnvironmentContext } from "../Environment";
 import PropTypes from "prop-types";
+import { EnvironmentContext } from "../Environment";
 import { checkConnectFourVictory } from "./helperConnectFour";
 import { refocusGameTree } from "./helperGameTree";
 import {
@@ -57,7 +57,7 @@ const WaitingIndicator = React.forwardRef((_, ref) => {
       <circle
         id="indicatorElement1"
         cx="1181.5"
-        cy={-61.16}
+        cy={-180.7 / 3}
         r={(8 * 278) / 126}
         fill="#fff"
         stroke="#224"
@@ -66,7 +66,7 @@ const WaitingIndicator = React.forwardRef((_, ref) => {
       <circle
         id="indicatorElement2"
         cx="1320.5"
-        cy={-61.16}
+        cy={-180.7 / 3}
         r={(8 * 278) / 126}
         fill="#fff"
         stroke="#224"
@@ -75,7 +75,7 @@ const WaitingIndicator = React.forwardRef((_, ref) => {
       <circle
         id="indicatorElement3"
         cx="1459.5"
-        cy={-61.16}
+        cy={-180.7 / 3}
         r={(8 * 278) / 126}
         fill="#fff"
         stroke="#224"
@@ -84,7 +84,7 @@ const WaitingIndicator = React.forwardRef((_, ref) => {
       <circle
         id="indicatorElement4"
         cx="1598.5"
-        cy={-61.16}
+        cy={-180.7 / 3}
         r={(8 * 278) / 126}
         fill="#fff"
         stroke="#224"
@@ -105,7 +105,7 @@ const EvaluatedNodesIndicator = React.forwardRef((_, ref) => {
       fontFamily="Nunito, sans-serif"
       fontWeight="900"
       x="1390"
-      y={-61.16}
+      y={-180.7 / 3}
       paintOrder="stroke"
       fill="#fff"
       stroke="#224"
@@ -277,7 +277,13 @@ function PracticeConnectFour(props) {
     requestStatusIndicator.current.setAttribute("fill", "#fd7");
     requestStatusIndicator.current.textContent = "Maximizer's turn";
 
-    drawConnectFourGameTreeNode(treeCanvas.current, board.current, 1390, 0);
+    drawConnectFourGameTreeNode(
+      treeCanvas.current,
+      board.current,
+      1390,
+      0,
+      3 * (1 + (0.2 * 278) / 126),
+    );
     expandGameTree(treeCanvas.current, board.current, "y", 0, 0);
     getEvaluations();
   }
@@ -566,7 +572,13 @@ function PracticeConnectFour(props) {
       }
     });
 
-    drawConnectFourGameTreeNode(treeCanvas.current, board.current, 1390, 0);
+    drawConnectFourGameTreeNode(
+      treeCanvas.current,
+      board.current,
+      1390,
+      0,
+      3 * (1 + (0.2 * 278) / 126),
+    );
     expandGameTree(treeCanvas.current, board.current, "y", 0, 0);
 
     return () => {
@@ -621,7 +633,7 @@ function PracticeConnectFour(props) {
 
       text = text.cloneNode(false);
       text.setAttribute("font-size", 52.125);
-      text.setAttribute("y", -61.16);
+      text.setAttribute("y", -180.7 / 3);
       text.setAttribute("stroke-width", (8.5 * 278) / 126);
       treeCanvas.current.parentNode.appendChild(text);
 

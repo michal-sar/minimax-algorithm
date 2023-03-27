@@ -88,7 +88,6 @@ function TheoryHeuristics() {
   const connectFourCanvas = useRef(null);
   const ticTacToeEstimation = useRef(null);
   const connectFourEstimation = useRef(null);
-
   const [ticTacToeBoard, setTicTacToeBoard] = useState(
     getRandomTicTacToeState(),
   );
@@ -98,7 +97,13 @@ function TheoryHeuristics() {
 
   useEffect(() => {
     ticTacToeCanvas.current.innerHTML = "";
-    drawTicTacToeGameTreeNode(ticTacToeCanvas.current, ticTacToeBoard, 63, 0);
+    drawTicTacToeGameTreeNode(
+      ticTacToeCanvas.current,
+      ticTacToeBoard,
+      63,
+      0,
+      3,
+    );
     getTicTacToeEstimation(ticTacToeEstimation.current, ticTacToeBoard);
   }, [ticTacToeBoard]);
 
@@ -109,6 +114,7 @@ function TheoryHeuristics() {
       connectFourBoard,
       139,
       -19,
+      3,
     );
     getConnectFourEstimation(connectFourEstimation.current, connectFourBoard);
   }, [connectFourBoard]);
@@ -183,7 +189,10 @@ function TheoryHeuristics() {
         <div>
           <TicTacToeCanvas ref={ticTacToeCanvas} />
           <TicTacToeEstimation ref={ticTacToeEstimation} />
-          <button onClick={() => setTicTacToeBoard(getRandomTicTacToeState())}>
+          <button
+            className="randomizeButton"
+            onClick={() => setTicTacToeBoard(getRandomTicTacToeState())}
+          >
             <svg
               width="40"
               viewBox="-10 -10 60 60"
@@ -205,6 +214,7 @@ function TheoryHeuristics() {
           <ConnectFourCanvas ref={connectFourCanvas} />
           <ConnectFourEstimation ref={connectFourEstimation} />
           <button
+            className="randomizeButton"
             onClick={() => setConnectFourBoard(getRandomConnectFourState())}
           >
             <svg
@@ -244,47 +254,47 @@ function TheoryHeuristics() {
         <br />
         <b>begin</b>
         <br />
-        <span className="line">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden>{"  "}</span>
         <b>if</b> n ∈ F <b>or</b> d = 0 <b>then return</b> H(n)
         <br />
-        <span className="line">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden>{"  "}</span>
         <b>if</b> maximizer_turn
         <br />
-        <span className="line">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>v {"<-"} -∞
         <br />
-        <span className="line">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="line">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>v {"<-"} Max(v, MiniMax(s, d - 1,{" "}
         <i>False</i>))
         <br />
-        <span className="line">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
         <b>return</b> v<br />
-        <span className="line">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden>{"  "}</span>
         <b>else</b>
         <br />
-        <span className="line">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>v {"<-"} +∞
         <br />
-        <span className="line">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="line">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>v {"<-"} Min(v, MiniMax(s, d - 1,{" "}
         <i>True</i>))
         <br />
-        <span className="line">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
         <b>return</b> v<br />
-        <span className="line">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden>{"  "}</span>
         <b>end</b>
         <br />
@@ -306,53 +316,53 @@ function TheoryHeuristics() {
         <br />
         <b>begin</b>
         <br />
-        <span className="unselectable">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden> </span>
         <b>if</b> n ∈ F <b>or</b> d = 0 <b>then return</b> H(n)
         <br />
-        <span className="unselectable">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden> </span>
         <b>if</b> maximizer_turn
         <br />
-        <span className="unselectable">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden> </span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="unselectable">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden> </span>α {"<-"} Max(α, MiniMaxAlphaBeta(s, d - 1,{" "}
         <i>False</i>, α, β))
         <br />
-        <span className="unselectable">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden> </span>
         <b>if</b> α {">="} β<br />
-        <span className="unselectable">⎪ ⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ ⎪ </span>
         <span hidden> </span>
         <b>return</b> α<br />
-        <span className="unselectable">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden> </span>
         <b>return</b> α<br />
-        <span className="unselectable">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden> </span>
         <b>else</b>
         <br />
-        <span className="unselectable">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden> </span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="unselectable">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden> </span>β {"<-"} Min(β, MiniMaxAlphaBeta(s, d - 1,{" "}
         <i>True</i>, α, β))
         <br />
-        <span className="unselectable">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden> </span>
         <b>if</b> α {">="} β<br />
-        <span className="unselectable">⎪ ⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ ⎪ </span>
         <span hidden> </span>
         <b>return</b> β<br />
-        <span className="unselectable">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden> </span>
         <b>return</b> β<br />
-        <span className="unselectable">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden> </span>
         <b>end</b>
         <br />

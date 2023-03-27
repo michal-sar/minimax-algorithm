@@ -49,53 +49,53 @@ function TheoryAlphaBetaPruning() {
         <br />
         <b>begin</b>
         <br />
-        <span className="unselectable">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden>{"  "}</span>
         <b>if</b> n ∈ F <b>then return</b> U(n)
         <br />
-        <span className="unselectable">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden>{"  "}</span>
         <b>if</b> maximizer_turn
         <br />
-        <span className="unselectable">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="unselectable">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>α {"<-"} Max(α, MiniMaxAlphaBeta(s,{" "}
         <i>False</i>, α, β))
         <br />
-        <span className="unselectable">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>
         <b>if</b> α {">="} β<br />
-        <span className="unselectable">⎪ ⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ ⎪ </span>
         <span hidden>{"        "}</span>
         <b>return</b> α<br />
-        <span className="unselectable">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
         <b>return</b> α<br />
-        <span className="unselectable">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden>{"  "}</span>
         <b>else</b>
         <br />
-        <span className="unselectable">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="unselectable">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>β {"<-"} Min(β, MiniMaxAlphaBeta(s,{" "}
         <i>True</i>, α, β))
         <br />
-        <span className="unselectable">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>
         <b>if</b> α {">="} β<br />
-        <span className="unselectable">⎪ ⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ ⎪ ⎪ </span>
         <span hidden>{"        "}</span>
         <b>return</b> β<br />
-        <span className="unselectable">⎪ ⎪ </span>
+        <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
         <b>return</b> β<br />
-        <span className="unselectable">⎪ </span>
+        <span className="vertical">⎪ </span>
         <span hidden>{"  "}</span>
         <b>end</b>
         <br />

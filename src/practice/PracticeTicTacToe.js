@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useContext } from "react";
-import { EnvironmentContext } from "../Environment";
 import PropTypes from "prop-types";
+import { EnvironmentContext } from "../Environment";
 import { checkTicTacToeVictory } from "./helperTicTacToe";
 import { refocusGameTree } from "./helperGameTree";
 import {
@@ -274,7 +274,7 @@ function PracticeTicTacToe(props) {
     requestStatusIndicator.current.setAttribute("fill", "#f97");
     requestStatusIndicator.current.textContent = "Maximizer's turn";
 
-    drawTicTacToeGameTreeNode(treeCanvas.current, board.current, 630, 0);
+    drawTicTacToeGameTreeNode(treeCanvas.current, board.current, 630, 0, 3.6);
     expandGameTree(treeCanvas.current, board.current, 0, 0);
     getEvaluations();
   }
@@ -532,7 +532,7 @@ function PracticeTicTacToe(props) {
       }
     });
 
-    drawTicTacToeGameTreeNode(treeCanvas.current, board.current, 630, 0);
+    drawTicTacToeGameTreeNode(treeCanvas.current, board.current, 630, 0, 3.6);
     expandGameTree(treeCanvas.current, board.current, 0, 0);
 
     return () => {

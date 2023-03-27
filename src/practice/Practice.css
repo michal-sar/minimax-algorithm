@@ -2,20 +2,45 @@
   background: #fff;
   border: 4px solid #224;
   border-radius: 4px;
-  height: calc(100vh - 152px);
+  display: flex;
+  flex-direction: row;
+  height: 583px;
   margin: 20px 20px 24px;
-  min-height: 238px;
-  overflow: hidden;
 }
 
-.practiceContainer > .tree {
-  float: left;
-  margin-left: 20px;
-  width: calc(50% - 20px);
+.practiceContainerChild {
+  margin: 0 auto 8px;
+  min-width: 486px;
 }
 
-.practiceContainer > .codeLabel {
-  margin: -46px 0 0 50%;
+.practiceContainerChild > .monospaced {
+  height: 394px;
+  letter-spacing: -1.7px; /* ... */
+  margin: 10px 0;
+  /* overflow: hidden; */
+  /* white-space: nowrap; */
+}
+
+.treeGraph {
+  flex-basis: 100%;
+  margin: 0 0px 8px 0;
+  max-width: 448px;
+  position: relative;
+}
+
+.treeGraph > div {
+  bottom: 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  position: absolute;
+  width: 100%;
+}
+
+.practiceContainer > div > .pseudocodeLabel,
+.practiceContainer > div > .evaluatedNodesLabel,
+.practiceContainer > div > .decisionLabel {
+  margin: 10px 0;
 }
 
 .game,
@@ -316,4 +341,38 @@
   100% {
     opacity: 0;
   }
+}
+
+.highlightLine {
+  background-color: #ddf;
+  border-radius: 4px;
+  /* transition: 0.15s ease-in-out; */
+}
+
+.highlightN,
+.highlightS {
+  border-radius: 3px;
+  outline-offset: -2px;
+  outline-style: solid;
+  outline-width: 3px;
+  padding: 0px 4px;
+}
+
+.highlightN {
+  outline-color: #f77;
+}
+
+.highlightS {
+  outline-color: #77f;
+  /* transition: 0.15s ease-in-out; */
+}
+
+.highlightNode {
+  stroke: #f77;
+  /* transition: 0.15s ease-in-out; */
+}
+
+.highlightSuccessor {
+  stroke: #77f;
+  /* transition: 0.15s ease-in-out; */
 }

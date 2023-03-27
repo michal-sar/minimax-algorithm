@@ -7,7 +7,6 @@ import "./Practice.css";
 
 function Practice(props) {
   const { practice } = props;
-
   const webSocket = useMemo(() => {
     return new WebSocket("wss://minimax-algorithm.pagekite.me/ws");
   }, []);

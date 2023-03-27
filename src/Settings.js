@@ -14,7 +14,6 @@ function Settings(props) {
     setDepthLimit,
     setDepthLimitValue,
   } = useContext(EnvironmentContext);
-
   const [top, setTop] = useState(139);
 
   useEffect(() => {
@@ -47,7 +46,7 @@ function Settings(props) {
       className="settings"
       style={
         practice == "Tree"
-          ? { marginBottom: "max(calc(100vh - 358px), 32px)", top: `${top}px` }
+          ? { marginBottom: "377px", top: `${top}px` }
           : { marginBottom: "269px", top: `${top}px` }
       }
     >
