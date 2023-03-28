@@ -8,8 +8,8 @@ function TheoryMiniMaxAlgorithm() {
   return (
     <SimpleBar id="theoryContainer">
       <p>
-        The <b>MiniMax algorithm</b> determines the optimal move in two-player,{" "}
-        <u>zero-sum games</u> with <u>perfect information</u>.{" "}
+        The <b>MiniMax algorithm</b> is used to determine the optimal move in
+        two-player, <u>zero-sum games</u> with <u>perfect information</u>.{" "}
         <u>Zero-sum games</u> are games where the interests of the players are
         opposite to one another – one player’s gain is equivalent to another
         player’s loss. A game has <u>perfect information</u> when every player
@@ -102,8 +102,7 @@ function TheoryMiniMaxAlgorithm() {
         <br />
         Min — returns the lowest number given as an input parameter
         <br />
-        maximizer_turn — binary variable (<i>True</i> when it’s the maximizer’s
-        turn)
+        maximizer_turn — binary variable (True when it’s the maximizer’s turn)
         <br />
         <br />
         <b>function</b> MiniMax(n, maximizer_turn)
@@ -126,7 +125,7 @@ function TheoryMiniMaxAlgorithm() {
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
         <span className="vertical">⎪ ⎪ ⎪ </span>
-        <span hidden>{"      "}</span>v {"<-"} Max(v, MiniMax(s, <i>False</i>))
+        <span hidden>{"      "}</span>v {"<-"} Max(v, MiniMax(s, False))
         <br />
         <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
@@ -143,7 +142,7 @@ function TheoryMiniMaxAlgorithm() {
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
         <span className="vertical">⎪ ⎪ ⎪ </span>
-        <span hidden>{"      "}</span>v {"<-"} Min(v, MiniMax(s, <i>True</i>))
+        <span hidden>{"      "}</span>v {"<-"} Min(v, MiniMax(s, True))
         <br />
         <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
@@ -155,11 +154,7 @@ function TheoryMiniMaxAlgorithm() {
         <b>end</b>
       </div>
       <p>
-        Initial call:{" "}
-        <span className="monospaced">
-          MiniMax(n, <i>True</i>)
-        </span>
-        .
+        Initial call: <span className="monospaced">MiniMax(n, True)</span>.
       </p>
       <p>Below you can see the MiniMax algorithm in action:</p>
       <div className="imageContainerSingle">

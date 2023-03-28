@@ -532,6 +532,14 @@ function PracticeTicTacToe(props) {
       }
     });
 
+    treeCanvas.current.parentNode.addEventListener("mouseup", () => {
+      treeCanvas.current.parentNode.blur();
+    });
+
+    treeCanvas.current.parentNode.addEventListener("mouseleave", () => {
+      treeCanvas.current.parentNode.blur();
+    });
+
     drawTicTacToeGameTreeNode(treeCanvas.current, board.current, 630, 0, 3.6);
     expandGameTree(treeCanvas.current, board.current, 0, 0);
 
@@ -619,7 +627,7 @@ function PracticeTicTacToe(props) {
         <h3 className="practiceTitle">Tic-tac-toe</h3>
         <GameCanvas ref={gameCanvas} />
       </div>
-      <svg className="gameTree" viewBox="0 -50.4 1260 504">
+      <svg className="gameTree" viewBox="0 -50.4 1260 504" tabIndex="1">
         <TreeCanvas ref={treeCanvas} />
         <RequestStatusIndicator ref={requestStatusIndicator} />
         <EvaluatedNodesIndicator ref={evaluatedNodesIndicator} />

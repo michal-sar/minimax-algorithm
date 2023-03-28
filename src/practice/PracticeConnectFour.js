@@ -572,6 +572,14 @@ function PracticeConnectFour(props) {
       }
     });
 
+    treeCanvas.current.parentNode.addEventListener("mouseup", () => {
+      treeCanvas.current.parentNode.blur();
+    });
+
+    treeCanvas.current.parentNode.addEventListener("mouseleave", () => {
+      treeCanvas.current.parentNode.blur();
+    });
+
     drawConnectFourGameTreeNode(
       treeCanvas.current,
       board.current,
@@ -665,7 +673,7 @@ function PracticeConnectFour(props) {
         <h3 className="practiceTitle">Connect four</h3>
         <GameCanvas ref={gameCanvas} />
       </div>
-      <svg className="gameTree" viewBox="0 -111.2 2780 1112">
+      <svg className="gameTree" viewBox="0 -111.2 2780 1112" tabIndex="1">
         <TreeCanvas ref={treeCanvas} />
         <RequestStatusIndicator ref={requestStatusIndicator} />
         <EvaluatedNodesIndicator ref={evaluatedNodesIndicator} />

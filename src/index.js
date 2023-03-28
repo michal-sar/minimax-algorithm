@@ -4,6 +4,9 @@ import Environment from "./Environment";
 import "simplebar-react/dist/simplebar.min.css";
 import "./index.css";
 
+require("../public/images/shortcut-icon-512.png");
+require("../public/images/shortcut-icon-192.png");
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <div>

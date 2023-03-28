@@ -1,5 +1,5 @@
 function drawTicTacToeBoard(gameCanvas) {
-  let g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
   g.classList = "board";
 
   let line = document.createElementNS("http://www.w3.org/2000/svg", "line");

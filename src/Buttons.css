@@ -115,8 +115,7 @@
   height: 60px;
   margin: 10px 5px 0;
   width: 60px;
-  transition: background 0.15s ease-in-out,
-    text-decoration-color 0.15s ease-in-out;
+  transition: background 0.15s ease-in-out;
 }
 
 .treePracticeButton:hover {
@@ -125,6 +124,7 @@
 
 .treePracticeButton:disabled {
   background: #fee;
+  cursor: default;
 }
 
 .treePracticeButton > svg > path {

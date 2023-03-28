@@ -270,8 +270,7 @@ function TheoryHeuristics() {
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
         <span className="vertical">⎪ ⎪ ⎪ </span>
-        <span hidden>{"      "}</span>v {"<-"} Max(v, MiniMax(s, d - 1,{" "}
-        <i>False</i>))
+        <span hidden>{"      "}</span>v {"<-"} Max(v, MiniMax(s, d - 1, False))
         <br />
         <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
@@ -288,8 +287,7 @@ function TheoryHeuristics() {
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
         <span className="vertical">⎪ ⎪ ⎪ </span>
-        <span hidden>{"      "}</span>v {"<-"} Min(v, MiniMax(s, d - 1,{" "}
-        <i>True</i>))
+        <span hidden>{"      "}</span>v {"<-"} Min(v, MiniMax(s, d - 1, True))
         <br />
         <span className="vertical">⎪ ⎪ </span>
         <span hidden>{"    "}</span>
@@ -301,11 +299,7 @@ function TheoryHeuristics() {
         <b>end</b>
       </div>
       <p>
-        Initial call:{" "}
-        <span className="monospaced">
-          MiniMax(n, d, <i>True</i>)
-        </span>
-        .
+        Initial call: <span className="monospaced">MiniMax(n, d, True)</span>.
       </p>
       <p>
         The following pseudocode describes the depth-limited version of the
@@ -329,8 +323,8 @@ function TheoryHeuristics() {
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
         <span className="vertical">⎪ ⎪ ⎪ </span>
-        <span hidden> </span>α {"<-"} Max(α, MiniMaxAlphaBeta(s, d - 1,{" "}
-        <i>False</i>, α, β))
+        <span hidden> </span>α {"<-"} Max(α, MiniMaxAlphaBeta(s, d - 1, False,
+        α, β))
         <br />
         <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden> </span>
@@ -350,8 +344,8 @@ function TheoryHeuristics() {
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
         <span className="vertical">⎪ ⎪ ⎪ </span>
-        <span hidden> </span>β {"<-"} Min(β, MiniMaxAlphaBeta(s, d - 1,{" "}
-        <i>True</i>, α, β))
+        <span hidden> </span>β {"<-"} Min(β, MiniMaxAlphaBeta(s, d - 1, True, α,
+        β))
         <br />
         <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden> </span>
@@ -370,9 +364,7 @@ function TheoryHeuristics() {
       </div>
       <p>
         Initial call:{" "}
-        <span className="monospaced">
-          MiniMaxAlphaBeta(n, d, <i>True</i>, -∞, +∞)
-        </span>
+        <span className="monospaced">MiniMaxAlphaBeta(n, d, True, -∞, +∞)</span>
         .
       </p>
       <p>

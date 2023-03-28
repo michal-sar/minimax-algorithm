@@ -62,8 +62,8 @@ function TheoryAlphaBetaPruning() {
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
         <span className="vertical">⎪ ⎪ ⎪ </span>
-        <span hidden>{"      "}</span>α {"<-"} Max(α, MiniMaxAlphaBeta(s,{" "}
-        <i>False</i>, α, β))
+        <span hidden>{"      "}</span>α {"<-"} Max(α, MiniMaxAlphaBeta(s, False,
+        α, β))
         <br />
         <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>
@@ -83,8 +83,8 @@ function TheoryAlphaBetaPruning() {
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
         <span className="vertical">⎪ ⎪ ⎪ </span>
-        <span hidden>{"      "}</span>β {"<-"} Min(β, MiniMaxAlphaBeta(s,{" "}
-        <i>True</i>, α, β))
+        <span hidden>{"      "}</span>β {"<-"} Min(β, MiniMaxAlphaBeta(s, True,
+        α, β))
         <br />
         <span className="vertical">⎪ ⎪ ⎪ </span>
         <span hidden>{"      "}</span>
@@ -103,10 +103,7 @@ function TheoryAlphaBetaPruning() {
       </div>
       <p>
         Initial call:{" "}
-        <span className="monospaced">
-          MiniMaxAlphaBeta(n, <i>True</i>, -∞, +∞)
-        </span>
-        .
+        <span className="monospaced">MiniMaxAlphaBeta(n, True, -∞, +∞)</span>.
       </p>
       <p>
         Below you can see the MiniMax algorithm with alpha-beta pruning in

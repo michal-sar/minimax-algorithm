@@ -15,10 +15,14 @@
 
 .practiceContainerChild > .monospaced {
   height: 394px;
-  letter-spacing: -1.7px; /* ... */
+  letter-spacing: -1.55px;
   margin: 10px 0;
-  /* overflow: hidden; */
-  /* white-space: nowrap; */
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ligature {
+  letter-spacing: normal;
 }
 
 .treeGraph {
@@ -253,9 +257,14 @@
   border: 4px solid #224;
   border-radius: 4px;
   box-shadow: #ddd 8px 8px 0 -4px, #224 8px 8px;
+  cursor: grab;
   flex-basis: 100%;
   margin: 0 8px 8px 0;
   max-height: 467px;
+}
+
+.gameTree:focus {
+  cursor: grabbing;
 }
 
 .offlineText,
@@ -343,36 +352,35 @@
   }
 }
 
-.highlightLine {
+.n,
+.s {
+  border-radius: 1px;
+  outline-offset: 0px;
+  outline-style: solid;
+  padding: 0px 1px;
+}
+
+.n {
+  outline-color: #f77;
+  outline-width: 3px;
+}
+
+.s {
+  outline-color: #77f;
+  outline-width: 0px;
+  transition: 0.15s ease-in-out;
+}
+
+span.highlight {
+  outline-width: 3px;
+}
+
+div.highlight {
   background-color: #ddf;
   border-radius: 4px;
-  /* transition: 0.15s ease-in-out; */
+  transition: 0.3s ease-in-out;
 }
 
-.highlightN,
-.highlightS {
-  border-radius: 3px;
-  outline-offset: -2px;
-  outline-style: solid;
-  outline-width: 3px;
-  padding: 0px 4px;
-}
-
-.highlightN {
-  outline-color: #f77;
-}
-
-.highlightS {
-  outline-color: #77f;
-  /* transition: 0.15s ease-in-out; */
-}
-
-.highlightNode {
-  stroke: #f77;
-  /* transition: 0.15s ease-in-out; */
-}
-
-.highlightSuccessor {
-  stroke: #77f;
-  /* transition: 0.15s ease-in-out; */
+#vertices > g {
+  transition: fill 0.3s ease-in-out, stroke 0.3s ease-in-out;
 }
