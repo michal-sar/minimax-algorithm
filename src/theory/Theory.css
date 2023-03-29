@@ -84,6 +84,7 @@ p {
 }
 
 .monospaced {
+  color: #224;
   font-family: "Fira Code", monospace;
   font-size: 1rem;
   font-variant-ligatures: contextual;
@@ -92,7 +93,6 @@ p {
 }
 
 div.monospaced {
-  color: #224;
   margin: 10px 56px 10px 33px;
   white-space: pre-wrap;
 }

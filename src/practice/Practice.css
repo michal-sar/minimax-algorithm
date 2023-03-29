@@ -15,7 +15,7 @@
 
 .practiceContainerChild > .monospaced {
   height: 394px;
-  letter-spacing: -1.55px;
+  letter-spacing: -1.625px;
   margin: 10px 0;
   overflow: hidden;
   white-space: nowrap;
@@ -354,10 +354,11 @@
 
 .n,
 .s {
-  border-radius: 1px;
-  outline-offset: 0px;
+  border-radius: 4px;
+  margin: 0 -3.25px 0 -1.5px;
+  outline-offset: -4px;
   outline-style: solid;
-  padding: 0px 1px;
+  padding: 0 7px 0 5.5px;
 }
 
 .n {
