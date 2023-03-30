@@ -6,6 +6,11 @@
   src: url(/public/fonts/Trap-Bold.woff2) format("woff2"),
     url(/public/fonts/Trap-Bold.woff) format("woff");
 }
+@font-face {
+  font-display: swap;
+  font-family: "Radical WUT";
+  src: url(/public/fonts/radikalwut-bold.otf);
+}
 
 :root {
   --depth-slider-value: 10;
@@ -25,9 +30,7 @@ body {
 footer {
   background-color: #fff;
   color: #224;
-  font-family: "Nunito", sans-serif;
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-family: "Radical WUT", sans-serif;
   outline: #224 solid 4px;
   padding: 10px 0;
   text-align: center;
@@ -37,11 +40,28 @@ footer {
   user-select: none;
 }
 
-a {
+.author {
+  font-family: "Nunito", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.author > a {
   color: #77f;
   text-decoration-color: #77f;
+}
+
+a {
+  color: #224;
+  text-decoration-color: #fff;
   text-decoration-thickness: 2px;
   text-underline-offset: 2px;
+  transition: color 0.15s ease-in-out, text-decoration-color 0.15s ease-in-out;
+}
+
+a:hover {
+  color: #77f;
+  text-decoration-color: #77f;
 }
 
 .simplebar-track.simplebar-vertical .simplebar-scrollbar:before {

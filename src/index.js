@@ -12,7 +12,19 @@ root.render(
   <div>
     <Environment />
     <footer>
-      © Copyright – <a href="https://github.com/michal-sar">Michał Sar</a>
+      <span className="author">
+        Author – <a href="https://github.com/michal-sar">Michał Sar</a>
+      </span>
+      <br />
+      <a href="https://www.ii.pw.edu.pl/ii_en">Institute of Computer Science</a>
+      ,
+      <br />
+      <a href="https://www.elka.pw.edu.pl/eng">
+        The Faculty of Electronics and Information Technology
+      </a>
+      ,
+      <br />
+      <a href="https://www.pw.edu.pl/engpw">Warsaw University of Technology</a>
     </footer>
   </div>,
 );

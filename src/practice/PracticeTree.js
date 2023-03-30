@@ -849,6 +849,27 @@ function PracticeTree() {
             className="treePracticeButton"
             disabled={step == 1}
             onClick={() => {
+              setStep(1);
+            }}
+          >
+            <svg
+              width="40"
+              viewBox="-10 -10 60 60"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill="transparent"
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M 4 20 L 14.811626414829028 14.793395130589301 M 4 20 L 14.81162641482903 25.206604869410697 M 25 20 L 35.811626414829028 14.793395130589301 M 25 20 L 35.81162641482903 25.206604869410697 Z"
+              />
+            </svg>
+          </button>
+          <button
+            className="treePracticeButton"
+            disabled={step == 1}
+            onClick={() => {
               setStep(step - 1);
             }}
           >
@@ -884,6 +905,27 @@ function PracticeTree() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 d="M 0 20 L 40 20 M 40 20 L 29.18837358517097 25.206604869410697 L 29.18837358517097 14.793395130589303 Z"
+              />
+            </svg>
+          </button>
+          <button
+            className="treePracticeButton"
+            disabled={step == stepList.length}
+            onClick={() => {
+              setStep(stepList.length);
+            }}
+          >
+            <svg
+              width="40"
+              viewBox="-10 -10 60 60"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill="transparent"
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M 15 20 L 5.18837358517097 25.206604869410697 M 15 20 L 4.18837358517097 14.793395130589303 M 36 20 L 25.18837358517097 25.206604869410697 M 36 20 L 25.18837358517097 14.793395130589303 Z"
               />
             </svg>
           </button>
