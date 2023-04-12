@@ -91,10 +91,3 @@ a:hover {
 .simplebar-wrapper {
   width: 0;
 }
-
-#root > div {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 100vh;
-}
