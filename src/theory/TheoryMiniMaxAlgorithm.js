@@ -8,8 +8,8 @@ function TheoryMiniMaxAlgorithm() {
   return (
     <SimpleBar id="theoryContainer">
       <p>
-        The <b>MiniMax algorithm</b> is used to determine the optimal move in
-        two-player, <u>zero-sum games</u> with <u>perfect information</u>.{" "}
+        The <b>MiniMax algorithm</b> can be used to determine the optimal move
+        in two-player, <u>zero-sum games</u> with <u>perfect information</u>.{" "}
         <u>Zero-sum games</u> are games where the interests of the players are
         opposite to one another – one player’s gain is equivalent to another
         player’s loss. A game has <u>perfect information</u> when every player
@@ -62,9 +62,9 @@ function TheoryMiniMaxAlgorithm() {
         <div className="functionContainer">
           <div>
             {"       "}⎧ <br />
-            {"       "}⎪ <br />
+            {"       "}⎪<br />
             U(f) = ⎨ <br />
-            {"       "}⎪ <br />
+            {"       "}⎪<br />
             {"       "}⎩ <br />
           </div>
           <div className="functionValues">
@@ -81,7 +81,7 @@ function TheoryMiniMaxAlgorithm() {
         from the scores assigned to the children nodes, which are found using a{" "}
         <u>successor function</u>. The score choice depends on whether it is the
         player’s (the maximizer’s) or the opponent’s (the minimizer’s) turn. The
-        maximizer selects the highest out of the assigned scores and the
+        maximizer selects the highest out of the assigned scores, and the
         minimizer – the lowest. Of course, the children nodes have not been
         evaluated yet, so for every reachable non-final state, another instance
         of the MiniMax algorithm must be called to perform the score assignment.
@@ -109,45 +109,45 @@ function TheoryMiniMaxAlgorithm() {
         <br />
         <b>begin</b>
         <br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden>{"  "}</span>
         <b>if</b> n ∈ F <b>then return</b> U(n)
         <br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden>{"  "}</span>
         <b>if</b> maximizer_turn
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>v {"<-"} -∞
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="vertical">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪⎪⎪</span>
         <span hidden>{"      "}</span>v {"<-"} Max(v, MiniMax(s, False))
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>
         <b>return</b> v<br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden>{"  "}</span>
         <b>else</b>
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>v {"<-"} +∞
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="vertical">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪⎪⎪</span>
         <span hidden>{"      "}</span>v {"<-"} Min(v, MiniMax(s, True))
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>
         <b>return</b> v<br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden>{"  "}</span>
         <b>end</b>
         <br />

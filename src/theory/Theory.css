@@ -95,7 +95,6 @@ p {
 
 div.monospaced {
   margin: 10px 56px 10px 33px;
-  white-space: pre-wrap;
 }
 
 span.monospaced {
@@ -114,6 +113,8 @@ u {
   align-items: center;
   display: flex;
   justify-content: center;
+  min-width: 537px;
+  white-space: pre-wrap;
 }
 
 .functionValues {

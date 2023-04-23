@@ -126,13 +126,13 @@ function TheoryHeuristics() {
         of estimating the utility of a state without having to complete the
         execution of the algorithm. They provide a way to make educated guesses
         on which <span className="outlineBlue">non-final states</span> are more
-        likely to lead to a favorable outcome for the current player.
+        likely to lead to a favourable outcome for the current player.
       </p>
       <p>
-        A <u>heuristic function</u> utilizes heuristics to return an estimation
-        of the utility of a given{" "}
-        <span className="outlineBlue">non-final state</span> or return the
-        utility of a given <span className="outlineRed">final state</span>.
+        A <u>heuristic function</u> returns the utility of a given{" "}
+        <span className="outlineRed">final state</span> or utilises heuristics
+        to return an estimation of the utility of a given{" "}
+        <span className="outlineBlue">non-final state</span>.
       </p>
       <p>
         Here’s an example of a <u>heuristic function</u> for tic-tac-toe:
@@ -167,21 +167,17 @@ function TheoryHeuristics() {
           </div>
           <div className="functionValues">
             U(n), n ∈ F<br />
-            0.02 * (Yellow<sub>2</sub>(n) + 2 * Yellow<sub>3</sub>(n) - Red
-            <sub>2</sub>(n) - 2 * Red<sub>3</sub>(n)), n ∉ F<br />
+            0.02 * (Y<sub>2</sub>(n) + 2 * Y<sub>3</sub>(n) - R<sub>2</sub>(n) -
+            2 * R<sub>3</sub>(n)), n ∉ F<br />
           </div>
         </div>
-        <br />
-        Yellow<sub>2</sub> — returns the number of unfinished winning patterns
+        <br />Y<sub>2</sub> — returns the number of unfinished winning patterns
         containing exactly two yellow tokens
-        <br />
-        Yellow<sub>3</sub> — returns the number of unfinished winning patterns
+        <br />Y<sub>3</sub> — returns the number of unfinished winning patterns
         containing exactly three yellow tokens
-        <br />
-        Red<sub>2</sub> — returns the number of unfinished winning patterns
+        <br />R<sub>2</sub> — returns the number of unfinished winning patterns
         containing exactly two red tokens
-        <br />
-        Red<sub>3</sub> — returns the number of unfinished winning patterns
+        <br />R<sub>3</sub> — returns the number of unfinished winning patterns
         containing exactly three red tokens
         <br />
       </div>
@@ -254,45 +250,45 @@ function TheoryHeuristics() {
         <br />
         <b>begin</b>
         <br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden>{"  "}</span>
         <b>if</b> n ∈ F <b>or</b> d = 0 <b>then return</b> H(n)
         <br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden>{"  "}</span>
         <b>if</b> maximizer_turn
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>v {"<-"} -∞
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="vertical">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪⎪⎪</span>
         <span hidden>{"      "}</span>v {"<-"} Max(v, MiniMax(s, d - 1, False))
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>
         <b>return</b> v<br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden>{"  "}</span>
         <b>else</b>
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>v {"<-"} +∞
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="vertical">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪⎪⎪</span>
         <span hidden>{"      "}</span>v {"<-"} Min(v, MiniMax(s, d - 1, True))
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>
         <b>return</b> v<br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden>{"  "}</span>
         <b>end</b>
         <br />
@@ -310,53 +306,55 @@ function TheoryHeuristics() {
         <br />
         <b>begin</b>
         <br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden> </span>
         <b>if</b> n ∈ F <b>or</b> d = 0 <b>then return</b> H(n)
         <br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden> </span>
         <b>if</b> maximizer_turn
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden> </span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="vertical">⎪ ⎪ ⎪ </span>
-        <span hidden> </span>α {"<-"} Max(α, MiniMaxAlphaBeta(s, d - 1, False,
-        α, β))
-        <br />
-        <span className="vertical">⎪ ⎪ ⎪ </span>
+        <div style={{ whiteSpace: "nowrap" }}>
+          <span className="vertical">⎪⎪⎪</span>
+          <span hidden> </span>α {"<-"} Max(α, MiniMaxAlphaBeta(s, d - 1, False,
+          α, β))
+        </div>
+        <span className="vertical">⎪⎪⎪</span>
         <span hidden> </span>
         <b>if</b> α {">="} β<br />
-        <span className="vertical">⎪ ⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪⎪⎪⎪</span>
         <span hidden> </span>
         <b>return</b> α<br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden> </span>
         <b>return</b> α<br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden> </span>
         <b>else</b>
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden> </span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="vertical">⎪ ⎪ ⎪ </span>
-        <span hidden> </span>β {"<-"} Min(β, MiniMaxAlphaBeta(s, d - 1, True, α,
-        β))
-        <br />
-        <span className="vertical">⎪ ⎪ ⎪ </span>
+        <div style={{ whiteSpace: "nowrap" }}>
+          <span className="vertical">⎪⎪⎪</span>
+          <span hidden> </span>β {"<-"} Min(β, MiniMaxAlphaBeta(s, d - 1, True,
+          α, β))
+        </div>
+        <span className="vertical">⎪⎪⎪</span>
         <span hidden> </span>
         <b>if</b> α {">="} β<br />
-        <span className="vertical">⎪ ⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪⎪⎪⎪</span>
         <span hidden> </span>
         <b>return</b> β<br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden> </span>
         <b>return</b> β<br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden> </span>
         <b>end</b>
         <br />
@@ -373,7 +371,7 @@ function TheoryHeuristics() {
         making imperfect evaluations unless the heuristic function itself is
         perfect, which, in most cases, is unattainable. Therefore, the
         evaluations obtained from the MiniMax algorithm with or without
-        alpha-beta pruning can differ from those obtained from depth-limited
+        alpha-beta pruning can differ from those obtained from the depth-limited
         versions of these algorithms.
       </p>
     </SimpleBar>

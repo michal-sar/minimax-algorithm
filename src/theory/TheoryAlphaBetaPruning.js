@@ -26,10 +26,10 @@ function TheoryAlphaBetaPruning() {
         far. That way, if a node with a score worse than or equal to{" "}
         <span className="monospaced">α</span> is available on a given path
         during the minimizer’s turn, further evaluations can be omitted, as we
-        know that this branch will not be chosen by the maximizer in the first
-        place. Likewise, if a node with a score better than or equal to{" "}
+        know that the maximizer will not choose this branch in the first place.
+        Likewise, if a node with a score better than or equal to{" "}
         <span className="monospaced">β</span> is available on a given path
-        during the maximizer’s turn, further evaluations can be omitted as well.
+        during the maximizer’s turn, further evaluations can also be omitted.
       </p>
       <p>
         The results obtained from the MiniMax algorithm with and without
@@ -49,53 +49,53 @@ function TheoryAlphaBetaPruning() {
         <br />
         <b>begin</b>
         <br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden>{"  "}</span>
         <b>if</b> n ∈ F <b>then return</b> U(n)
         <br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden>{"  "}</span>
         <b>if</b> maximizer_turn
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="vertical">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪⎪⎪</span>
         <span hidden>{"      "}</span>α {"<-"} Max(α, MiniMaxAlphaBeta(s, False,
         α, β))
         <br />
-        <span className="vertical">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪⎪⎪</span>
         <span hidden>{"      "}</span>
         <b>if</b> α {">="} β<br />
-        <span className="vertical">⎪ ⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪⎪⎪⎪</span>
         <span hidden>{"        "}</span>
         <b>return</b> α<br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>
         <b>return</b> α<br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden>{"  "}</span>
         <b>else</b>
         <br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>
         <b>for each</b> s ∈ S(n) <b>do</b>
         <br />
-        <span className="vertical">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪⎪⎪</span>
         <span hidden>{"      "}</span>β {"<-"} Min(β, MiniMaxAlphaBeta(s, True,
         α, β))
         <br />
-        <span className="vertical">⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪⎪⎪</span>
         <span hidden>{"      "}</span>
         <b>if</b> α {">="} β<br />
-        <span className="vertical">⎪ ⎪ ⎪ ⎪ </span>
+        <span className="vertical">⎪⎪⎪⎪</span>
         <span hidden>{"        "}</span>
         <b>return</b> β<br />
-        <span className="vertical">⎪ ⎪ </span>
+        <span className="vertical">⎪⎪</span>
         <span hidden>{"    "}</span>
         <b>return</b> β<br />
-        <span className="vertical">⎪ </span>
+        <span className="vertical">⎪</span>
         <span hidden>{"  "}</span>
         <b>end</b>
         <br />
