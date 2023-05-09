@@ -56,7 +56,7 @@ function TheoryMiniMaxAlgorithm() {
       <p>
         If the evaluated state is final, a <u>utility function</u> (also called
         a <u>payoff function</u>) assigns a score to the state based on the
-        outcome of the game. Here{"'"}s an example of a <u>utility function</u>:
+        outcome of the game. Here’s an example of a <u>utility function</u>:
       </p>
       <div className="monospaced">
         <div className="functionContainer">

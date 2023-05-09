@@ -126,11 +126,11 @@ function TheoryHeuristics() {
         of estimating the utility of a state without having to complete the
         execution of the algorithm. They provide a way to make educated guesses
         on which <span className="outlineBlue">non-final states</span> are more
-        likely to lead to a favourable outcome for the current player.
+        likely to lead to a favorable outcome for the current player.
       </p>
       <p>
         A <u>heuristic function</u> returns the utility of a given{" "}
-        <span className="outlineRed">final state</span> or utilises heuristics
+        <span className="outlineRed">final state</span> or utilizes heuristics
         to return an estimation of the utility of a given{" "}
         <span className="outlineBlue">non-final state</span>.
       </p>
@@ -233,7 +233,7 @@ function TheoryHeuristics() {
       </div>
       <p>
         The examples of the heuristic functions provided above are used on this
-        website to provide the utility of a state or it’s estimation where
+        website to provide the utility of a state or its estimation where
         needed.
       </p>
       <p>
